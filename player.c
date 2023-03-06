@@ -1,9 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
 #include "player.h"
 #include "textColor.h"
+
+
+
+struct Player* currentPlayer;
+
+struct Player* getCurrentPlayer() {
+	return currentPlayer;
+}
+
+void setCurrentPlayer(struct Player* player) {
+	currentPlayer = player;
+}
 
 int getAmountOfPlayers() {
 	int amount;
@@ -74,8 +85,8 @@ void displayPlayerBoard(int amount, struct Player* players) {
 
 }
 
-struct Player getPlayer(struct Player* players, int i) {
-	return players[i];
+struct Player* getPlayer(struct Player* players, int i) {
+	return &players[i];
 }
 
 

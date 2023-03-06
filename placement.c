@@ -7,10 +7,12 @@
 #include "textColor.h"
 #include "gamePhase.h"
 
+#include <conio.h>
+#include <ctype.h>
 
 
-void placePenguin(int size, char** board, struct Player player) {
-	printf("\n%s's turn\n", player.name);
+void placePenguin(int size, char** board, struct Player* player) {
+	printf("\n%s's turn\n", player->name);
 	printf("Choose your row (ex. 1): ");
 	int coordinateX;
 	scanf("%d", &coordinateX);
@@ -18,19 +20,19 @@ void placePenguin(int size, char** board, struct Player player) {
 	printf("Choose your column: (ex. A): ");
 	scanf(" %c", &coordinateY);
 
-	if (letterToInt(coordinateY, size) == 0 || coordinateX > size) {
-		displayBoard(size, board, getGamePhase());
+	if (letterToInt(coordinateY) == 0 || coordinateX > size) {
+		displayBoard(size, board);
 
-		printf("\n%d\n%c\n", letterToInt(coordinateY, size), coordinateY);
+		printf("\n%d\n%c\n", letterToInt(coordinateY), coordinateY);
 		setColor(12);
 		printf("Something went wrong, please, try again.\n");
 		setColor(7);
 		placePenguin(size, board, player);
 	}
-	player.penguinX = coordinateX;
-	player.penguinY = coordinateY;
+	player->penguinX = coordinateX;
+	player->penguinY = coordinateY;
 
-	board[player.penguinX - 1][letterToInt(player.penguinY, size) - 1] = 'P';
+	board[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
 }
 
 
@@ -55,7 +57,7 @@ void placeFish(int size, char** board, int amount) {
 	if (availableCells < amount) {
 		placeFish(size, board, amount);
 	}
-	displayBoard(size, board, getGamePhase());
+	displayBoard(size, board);
 
 }
 

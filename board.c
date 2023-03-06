@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "player.h"
 #include "textColor.h"
+#include "gamePhase.h"
 
 
 
@@ -34,25 +35,35 @@ char** getBoard(int size, char** board) {
 	return board;
 }
 
-void displayBoard(int size, char** board, int isMovement) {
+void displayBoard(int size, char** board) {
 	system("cls");
 	char symbol = 'A';
 	for (int i = 0; i < size; i++)
 		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n" : "");
 	printf("\n");
 
+	int phase = getGamePhase();
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			if (j == 0)
 				printf("%d%s", i + 1, (i < 9) ? " " : "");
 			
-
-			if (board[i][j] == '1' && !isMovement)
+			
+			if (board[i][j] == '1' && !phase)
 				setColor(10);
 
-			if (board[i][j] == 'P')
+			char** possibleMoves;
+			if (phase) {
+				possibleMoves = getPossibleMoves(board, size);
+				if (board[i][j] == possibleMoves[i][j])
+					setColor(10);
+			}
+
+			if (board[i][j] == 'P'){
 				setColor(1);
+			}
+
 
 			printf(" %c", board[i][j]);
 			setColor(7);
@@ -62,12 +73,6 @@ void displayBoard(int size, char** board, int isMovement) {
 	printf("\n\n");
 }
 
-int letterToInt(char coordinate, int size) {
-	char symbol = 'A';
-	for (int i = 1; i < size+1; i++) {
-		if (symbol == coordinate)
-			return i;
-		symbol += 1;
-	}
-	return 0;
+int letterToInt(char coordinate) {
+	return coordinate - 'A' + 1;
 }
