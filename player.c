@@ -1,13 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-
-struct Player {
-	char* name;
-	int id;
-	int points;
-};
+#include <conio.h>
+#include "player.h"
 
 int getAmountOfPlayers() {
 	int amount;
@@ -22,19 +17,17 @@ int getAmountOfPlayers() {
 	return amount;
 };
 
-struct Player* getPlayers(int amount, struct Player* players) {
-	players = malloc(sizeof(*players) * amount);
+struct Player* getAllPlayers(int amount, struct Player* players) {
 	for (int i = 0; i < amount; i++) {
-		printf("\n%d out of %d\n", i, amount);
-		//system("cls");
-		printf("Hi Player %d! How should I call you?(no more than 20 symbols): ", i);
+		printf("\n%d out of %d\n", i + 1, amount);
+		printf("Hi Player %d! How should I call you?: ", i + 1);
 
 		char* name = malloc(sizeof(char) * 20);
 		scanf("%s", name);
 		name[strcspn(name, "\r\n")] = 0; //to get rid of \0
 
 		players[i].name = name;
-		players[i].id = i;
+		players[i].id = i+1;
 		players[i].points = 0;
 	}
 
@@ -43,9 +36,13 @@ struct Player* getPlayers(int amount, struct Player* players) {
 
 void displayPlayerBoard(int amount, struct Player* players) {
 	system("cls");
+	printf("List of Players: \n");
 	for(int i = 0; i < amount; i++)
 		printf("Name: %s\nID: %d\nPoints: %d\n\n", players[i].name, players[i].id, players[i].points);
-	int check;
-	printf("\nCheck.");
-	scanf("%d", &check);
+	printf("Press any key to continue...");
+	_getch();
+}
+
+struct Player getPlayer(struct Player* players, int i) {
+	return players[i];
 }
