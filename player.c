@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "player.h"
-#include "penguinID.h"
 #include "textColor.h"
 #include "board.h"
 #include "system.h"
+#include <assert.h>
 
 
 
@@ -38,23 +38,6 @@ void setAmountOfPlayers() {
 	amountOfPlayers = amount;
 };
 
-
-void setAmountOfPenguins() { //Michal's function
-	int pengus;
-	clear();
-	printf("Please, input the amount of penguins (at least 1, max 3): ");
-	pengus = fixscanf();
-	while (pengus < 1 || pengus > 3) {
-		clear();
-		setColor(LIGHT_RED);
-		printf("ERROR: incorrect penguins amount. Please, type it again (at least 1, max 3): ");
-		setColor(LIGHT_GRAY);
-		pengus = fixscanf();
-	}
-	clear();
-	amountOfPenguins = pengus;
-};
-
 struct Player* getAllPlayers() {
 	for (int i = 0; i < amountOfPlayers; i++) {
 		printf("%s%d out of %d\n", (i != 0) ? "\n" : "", i + 1, amountOfPlayers);
@@ -76,6 +59,8 @@ struct Player* getAllPlayers() {
 		players[i].name = name;
 		players[i].id = i+1;
 		players[i].points = 0;
+		players[i].numberOfPenguins = 0;
+		players[i].movementStatus = MOVEMENT_IS_NOT_DONE;
 	}
 
 	return players;
@@ -101,6 +86,7 @@ void checkPlayerData() {
 		
 		printf("\nChange %s's name to: ", players[playerId].name);
 		char* name = malloc(sizeof(char) * 20);
+		assert(name);
 		scanf("%s", name);
 		name[strcspn(name, "\r\n")] = 0; //to get rid of \0
 
@@ -146,50 +132,52 @@ struct Player* getPlayer(int playerID) {
 	return &players[playerID];
 }
 
-char** getPossibleMoves(struct Board* board) {
-	struct Player* current = getCurrentPlayer();
+struct Board getPossibleMoves(struct Board* board, struct Player* current) {
 
-	char** possibleMoves = 0;
-	possibleMoves = malloc(sizeof(*board->grid) * board->size);
+	struct Board possibleMoves;
+	possibleMoves.grid = malloc(sizeof(*board->grid) * board->size);
 	for (int i = 0; i < board->size; i++)
-		possibleMoves[i] = malloc(sizeof(**board->grid) * board->size);
+		possibleMoves.grid[i] = malloc(sizeof(**board->grid) * board->size);
 
 	for (int i = 0; i < board->size; i++) {
-
 		for (int j = 0; j < board->size; j++)
-			possibleMoves[i][j] = '0';
+			possibleMoves.grid[i][j] = '0';
+	}
+
+	if (current->numberOfPenguins == 0) {
+		return possibleMoves;
 	}
 
 	int pengID = getPenguinID();
 
-	int x = current->penguinX[pengID] - 1;
-	int y = letterToInt(current->penguinY[pengID]) - 1;
+	int x = current->penguins[pengID].coordinateX - 1;
+	int y = letterToInt(current->penguins[pengID].coordinateY) - 1;
 
 	for (int i = x + 1; i < board->size; i++) {
-		if (board->grid[i][y] == 'X' || board->grid[i][y] == 'P')
+		if (board->grid[i][y] == '_' || board->grid[i][y] == 'P')
 			break;
-		possibleMoves[i][y] = board->grid[i][y];
+		possibleMoves.grid[i][y] = board->grid[i][y];
 	}
 
 	for (int i = x - 1; i >= 0; i--) {
-		if (board->grid[i][y] == 'X' || board->grid[i][y] == 'P')
+		if (board->grid[i][y] == '_' || board->grid[i][y] == 'P')
 			break;
-		possibleMoves[i][y] = board->grid[i][y];
+		possibleMoves.grid[i][y] = board->grid[i][y];
 	}
 
 	for (int j = y + 1; j < board->size; j++) {
-		if (board->grid[x][j] == 'X' || board->grid[x][j] == 'P')
+		if (board->grid[x][j] == '_' || board->grid[x][j] == 'P')
 			break;
-		possibleMoves[x][j] = board->grid[x][j];
+		possibleMoves.grid[x][j] = board->grid[x][j];
 	}
 
 	for (int j = y - 1; j >= 0; j--) {
-		if (board->grid[x][j] == 'X' || board->grid[x][j] == 'P')
+		if (board->grid[x][j] == '_' || board->grid[x][j] == 'P')
 			break;
-		possibleMoves[x][j] = board->grid[x][j];
+		possibleMoves.grid[x][j] = board->grid[x][j];
 	}
 
-	possibleMoves[x][y] = 'X';
+	possibleMoves.grid[x][y] = '_';
 	return possibleMoves;
 }
 

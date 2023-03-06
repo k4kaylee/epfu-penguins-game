@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "placement.h"
-#include "penguinID.h"
+#include "penguin.h"
 #include "movement.h"
 #include "board.h"
 #include "player.h"
@@ -10,6 +10,7 @@
 #include "gamePhase.h"
 #include "fileManager.h"
 #include "system.h"
+#include "penguin.h"
 #include "textColor.h"
 
 #define INTERACTIVE 0
@@ -37,9 +38,8 @@ void runInteractive(FILE* log) {
     setAmountOfPenguins();
 	fprintf(log, "\nPenguins for each player: %d", amountOfPenguins);
 	players = malloc(sizeof(struct Player) * amountOfPlayers);
-	for (int i = 0; i < amountOfPenguins; i++) {
-		players[i].penguinX = malloc(sizeof(int) * amountOfPenguins);
-		players[i].penguinY = malloc(sizeof(char) * amountOfPenguins);
+	for (int i = 0; i < amountOfPlayers; i++) {
+		players[i].penguins = malloc(sizeof(struct Penguin) * amountOfPenguins);
 	}
 
 	players = getAllPlayers();
@@ -49,7 +49,7 @@ void runInteractive(FILE* log) {
 		fprintf(log, "\n%d: %s", i + 1, players[i].name);
 	}
 
-	struct Board* board = malloc(sizeof(board));
+	struct Board* board = malloc(sizeof(struct Board));
 	board->grid = 0;
 	board->size = getSize();
 	board->grid = getBoard(board->size);
@@ -60,13 +60,12 @@ void runInteractive(FILE* log) {
 	
 	fprintf(log, "\n\nPLACEMENT:");
 	logBoard(board, log);
-
 	setGamePhase(PLACEMENT);
 	for (int j = 0; j < amountOfPenguins; j++) {
 		for (int i = 0; i < amountOfPlayers; i++) {
 			setPenguinID(j);
 			placePenguin(board, getPlayer(i));
-			fprintf(log, "\n%s places their penguin at %d %c", players[i].name, players[i].penguinX[j], players[i].penguinY[j]);
+			fprintf(log, "\n%s places their penguin at %d %c", players[i].name, players[i].penguins[j].coordinateX, players[i].penguins[j].coordinateY);
 			displayBoard(board);
 		}
 	}
@@ -75,24 +74,45 @@ void runInteractive(FILE* log) {
 
 
 	fprintf(log, "\n\nMOVEMENT:\n");
-	for (int i = 0; i < amountOfPlayers; i++) {
-		current = getPlayer(i);
-		setCurrentPlayer(current);
-		if (amountOfPenguins != 1) {
-			setGamePhase(CHOOSING_PENGUIN);
-			displayBoard(board);
-			choosePenguin(board);//lets player choose a penguin and sets penguinID
+	int playerCounter = amountOfPlayers;
+	while (playerCounter > 0) {
+		for (int i = 0; i < amountOfPlayers; i++) {
+			current = getPlayer(i);
+			setCurrentPlayer(current);
+
+			if (current->movementStatus || current->penguins == NULL) {
+				continue;
+			}
+
+			for (int k = 0; k < amountOfPlayers; k++) {
+				for (int j = 0; j < players[k].numberOfPenguins; j++) {
+					setPenguinID(j);
+					if (players[k].penguins != NULL && !checkMove(board, &players[k])) {
+						deletePenguin(&players[k]);
+						if (players[k].numberOfPenguins == 0) {
+							playerCounter--;
+							players[k].numberOfPenguins = MOVEMENT_IS_DONE;
+						}
+					}
+				}
+			}
+
+			if (amountOfPenguins != 1 && current->numberOfPenguins != 1) {
+				setGamePhase(CHOOSING_PENGUIN);
+				displayBoard(board);
+				choosePenguin(board);//lets player choose a penguin and sets penguinID
+			}
+			
+			if (playerCounter != 0 && current->numberOfPenguins != 0) {
+				setGamePhase(MOVEMENT);
+				displayBoard(board);
+				makeAMove(board);
+				int pengID = getPenguinID();
+				fprintf(log, "%s moves their penguin to %d %c\n", current->name, current->penguins[pengID].coordinateX, current->penguins[pengID].coordinateY);
+			}
 		}
-		setGamePhase(MOVEMENT);
-		displayBoard(board);
-		makeAMove(board);
-		int pengID = getPenguinID();
-		fprintf(log, "%s moves their penguin to %d %c\n", current->name, current->penguinX[pengID], current->penguinY[pengID]);
-		if (i == amountOfPlayers - 1)
-			setGamePhase(END_OF_GAME);
 	}
-
-
+	setGamePhase(END_OF_GAME);
 	
 	displayBoard(board);
 	logBoard(board, log);
@@ -100,6 +120,8 @@ void runInteractive(FILE* log) {
 	logPoints(log);
 	printf("\n\nThank you for the game! ^_^");
 };
+
+
 
 void runAutonomous(FILE* log) {
 	fprintf(log, "\nGamemode: Autonomous");

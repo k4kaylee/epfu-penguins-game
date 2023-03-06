@@ -1,4 +1,5 @@
 #include "player.h"
+#include <stdio.h>
 #ifdef _WIN32
 #define NULL_FILE "NUL"
 #else

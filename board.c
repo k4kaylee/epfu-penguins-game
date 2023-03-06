@@ -1,14 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
-
 #include "textColor.h"
 #include "gamePhase.h"
 #include "system.h"
-#include "penguinID.h"
+#include "penguin.h"
 
 
 
-int getSize() {
+int getSize() { //Roma's function
 	clear();
 	int size;
 	printf("Input board size: ");
@@ -24,19 +23,14 @@ int getSize() {
 	return size;
 }
 
-char** getBoard(int size) {
+char** getBoard(int size) { //Roma's function
 	char** board = malloc(sizeof(*board) * size);
 	for (int i = 0; i < size; i++)
 		board[i] = malloc(sizeof(**board) * size);
-
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++)
-			board[i][j] = 'X';
-	}
 	return board;
 }
 
-void displayBoard(struct Board* board) {
+void displayBoard(struct Board* board) { //Roma's function
 	clear();
 	char symbol = 'A';
 	for (int i = 0; i < board->size; i++)
@@ -54,18 +48,19 @@ void displayBoard(struct Board* board) {
 			if (board->grid[i][j] == '1' && phase == PLACEMENT)
 				setColor(LIGHT_GREEN);
 
-			char** possibleMoves;
+			struct Board possibleMoves;
 			if (phase == MOVEMENT) {
-				possibleMoves = getPossibleMoves(board);
-				if (board->grid[i][j] == possibleMoves[i][j])
+				struct Player* current = getCurrentPlayer();
+				possibleMoves = getPossibleMoves(board, current);
+				if (board->grid[i][j] == possibleMoves.grid[i][j])
 					setColor(LIGHT_GREEN);
 			}
 
 			//Colorising players penguins (Yuki Kawasaki)
 			if (board->grid[i][j] == 'P') {
 				for (int id = 0; id < amountOfPlayers; id++) {
-					for (int penguinID = 0; penguinID < amountOfPenguins; penguinID++) {
-						if (i + 1 == players[id].penguinX[penguinID] && ('A' + j) == players[id].penguinY[penguinID]) {
+					for (int pengID = 0; pengID < players[id].numberOfPenguins; pengID++) {
+						if (players[id].penguins != NULL && (i + 1 == players[id].penguins[pengID].coordinateX && ('A' + j) == players[id].penguins[pengID].coordinateY)) {
 							setColor(players[id].color);
 							break;
 						}

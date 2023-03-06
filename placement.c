@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 #include "board.h"
-#include "penguinID.h"
+#include "penguin.h"
 #include "system.h"
 #include "gamemode.h"
 #include "player.h"
@@ -12,7 +12,7 @@
 #include "gamePhase.h"
 
 
-void placePenguin(struct Board* board, struct Player* player) {
+void placePenguin(struct Board* board, struct Player* player) { //Roma's function
 	int pengID = getPenguinID();
 
 	setColor(player->color);
@@ -40,8 +40,8 @@ void placePenguin(struct Board* board, struct Player* player) {
 	int x = coordinateX - 1;
 	int y = letterToInt(coordinateY) - 1;
 
-
-	// check this placement is inside the board size
+	//Placement validation by Yuki
+	// check this placement is inside the board size   
 	while (y < 0 || y >= board->size || x < 0 || x >= board->size) {
 		displayBoard(board);
 		setColor(LIGHT_RED);
@@ -51,6 +51,7 @@ void placePenguin(struct Board* board, struct Player* player) {
 		coordinateX = fixscanf();
 		printf("Choose your column: (for example A): ");
 		scanf(" %c", &coordinateY);
+		coordinateY = (char)toupper(coordinateY);
 		x = coordinateX - 1;
 		y = letterToInt(coordinateY) - 1;
 
@@ -65,22 +66,22 @@ void placePenguin(struct Board* board, struct Player* player) {
 		coordinateX = fixscanf();
 		printf("Choose your column: (ex. A): ");
 		scanf(" %c", &coordinateY);
+		coordinateY = (char)toupper(coordinateY);
 		x = coordinateX - 1;
 		y = letterToInt(coordinateY) - 1;
-		printf("\n%d %c\n", x, coordinateY);
-
 	}
 
-	player->penguinX[pengID] = coordinateX;
-	player->penguinY[pengID] = coordinateY;
+	player->penguins[pengID].coordinateX = coordinateX;
+	player->penguins[pengID].coordinateY = coordinateY;
+	player->numberOfPenguins += 1;
 	player->points += 1;
 
-	board->grid[player->penguinX[pengID] - 1][letterToInt(player->penguinY[pengID]) - 1] = 'P';
+	board->grid[player->penguins[pengID].coordinateX - 1][letterToInt(player->penguins[pengID].coordinateY) - 1] = 'P';
 }
 
 
 
-void placeFish(struct Board* board, int amount) {
+void placeFish(struct Board* board, int amount) { //Michal's function
 	int availableCells = 0;
 
 	srand((unsigned int)time(NULL));
@@ -91,7 +92,7 @@ void placeFish(struct Board* board, int amount) {
 				availableCells = availableCells + 1;
 			}
 			if (board->grid[i][j] == '0') {
-				board->grid[i][j] = 'X';
+				board->grid[i][j] = '_';
 			}
 
 		}

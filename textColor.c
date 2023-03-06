@@ -10,7 +10,7 @@
 
 enum PlayerColor* colors = 0;
 
-void initColorsList() {
+void initColorsList() { //Roma's function
     colors = calloc(5, sizeof(int));
     for (int i = BLUE; i <= YELLOW; i++) {
         if (colors)
@@ -18,8 +18,7 @@ void initColorsList() {
     }
 };
 
-void setColor(int ForgC)  //set text color in terminal
-{
+void setColor(int ForgC) {  //Roma's function
     switch (ForgC) {
         case BLUE: printf("\x1B[34m"); break;
         case CYAN: printf("\x1B[36m"); break;
@@ -33,11 +32,6 @@ void setColor(int ForgC)  //set text color in terminal
 }
 
 void printColors() {
-    for (int i = BLUE; i < YELLOW; i++);
-}
-
-enum PlayerColor getPlayerColor() {
-    printColors();
     printf("Available colors:\n");
     for (int i = 0; i < 5; i++) {
         if (colors[i] != NO_COLOR) {
@@ -67,6 +61,10 @@ enum PlayerColor getPlayerColor() {
             setColor(LIGHT_GRAY);
         }
     }
+}
+
+enum PlayerColor getPlayerColor() {
+    printColors();
     printf("\nNow, please, choose the color for your penguins: ");
 
     int color = fixscanf();

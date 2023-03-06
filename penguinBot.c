@@ -12,7 +12,7 @@ int runPenguinBot(int argumentAmount, char** arguments) {
 	if (argumentAmount == 2) {
 		printf("ERROR: invalid amount of arguments.");
 		getChar();
-		return 1;
+		return 3;
 	}
 
 	char* phase = arguments[1];
@@ -21,20 +21,20 @@ int runPenguinBot(int argumentAmount, char** arguments) {
 		if (argumentAmount < 5) {
 			printf("ERROR: invalid amount of arguments. Program expects 5 arguments for placement mode.");
 			getChar();
-			return 1;
+			return 3;
 		}
 	}
 	else if (strcmp(phase, "movement") == 0) {
 		if (argumentAmount < 4) {
 			printf("ERROR: invalid amount of arguments. Program expects 4 arguments for movement mode.");
 			getChar();
-			return 1;
+			return 3;
 		}
 	}
 	else {
 		printf("ERROR: invalid phase value '%s'. Consider either 'placement' or 'movement'.", arguments[1]);
 		getChar();
-		return 1;
+		return 3;
 	}
 
 
@@ -43,7 +43,7 @@ int runPenguinBot(int argumentAmount, char** arguments) {
 	if (!boardFile) {
 		printf("ERROR: failed opening '%s' file.", arguments[3]);
 		getChar();
-		return 1;
+		return 3;
 	}
 	
 	int boardWidth;
@@ -76,7 +76,7 @@ int runPenguinBot(int argumentAmount, char** arguments) {
 	if (amountOfPenguins <= 0) {
 		printf("ERROR: invalid amount of penguins. It should be greater than 0.");
 		getChar();
-		return 1;
+		return 3;
 	}
 
 

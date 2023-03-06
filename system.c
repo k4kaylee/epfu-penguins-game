@@ -16,6 +16,8 @@
 #include "board.h"
 #include "textColor.h"
 
+
+//Roma's intersystem adaptation
 void clear() {
 #ifdef _WIN32
 	system("cls");
@@ -45,7 +47,7 @@ int letterToInt(char coordinate) {
 	return coordinate - 'A' + 1;
 }
 
-void clearLogDir() {
+void clearLogDir() {//Roma's function
 	int amountOfFiles = 0;
 	DIR* directory;
 	struct dirent* dir;
@@ -76,7 +78,7 @@ void clearLogDir() {
 	closedir(directory);
 }
 
-FILE* createlog() {
+FILE* createlog() { //Roma's function
 	FILE* log = NULL;
 	char buf[BUFSIZ];
 	time_t t = time(NULL);
@@ -106,7 +108,7 @@ FILE* createlog() {
 	return log;
 }
 
-void logBoard(struct Board* board, FILE* log) {
+void logBoard(struct Board* board, FILE* log) { //Roma's function
 	fprintf(log, "\n");
 	char symbol = 'A';
 	for (int i = 0; i < board->size; i++)
@@ -123,7 +125,7 @@ void logBoard(struct Board* board, FILE* log) {
 	fprintf(log, "\n\n");
 }
 
-void logPoints(FILE* log) {
+void logPoints(FILE* log) { //Roma's function
 	fprintf(log, "SCORE:");
 	struct Player* current;
 	int max = 0;
