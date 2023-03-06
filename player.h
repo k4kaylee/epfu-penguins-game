@@ -1,4 +1,9 @@
-struct player;
+struct Player {
+	char* name;
+	int id;
+	int points;
+};
 int getAmountOfPlayers();
-struct Player* getPlayers();
+struct Player* getAllPlayers();
 void displayPlayerBoard();
+struct Player getPlayer();

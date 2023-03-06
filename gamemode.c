@@ -22,8 +22,9 @@ int getGamemode() {
 void runInteractive() {
 	int amountOfPlayers = getAmountOfPlayers();
 	struct Player* players = 0;
+	players = malloc(sizeof(struct Player) * amountOfPlayers);
 
-	players = getPlayers(amountOfPlayers, players);
+	players = getAllPlayers(amountOfPlayers, players);
 	displayPlayerBoard(amountOfPlayers, players);
 
 	char** board = 0;
@@ -31,7 +32,10 @@ void runInteractive() {
 	board = getBoard(size, board);
 
 	placeFish(size, board);
-	placePenguin(size, board);
+	
+	for (int i = 0; i < amountOfPlayers; i++) {
+		placePenguin(size, board, getPlayer(players, i));
+	}
 };
 
 void runAutonomous() {

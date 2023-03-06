@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "player.h"
 
 
 
@@ -8,10 +9,12 @@ int getSize() {
 	int size;
 	printf("Input board size: ");
 	scanf("%d", &size);
-	if (size <= 3 || size > 21) {
-		printf("ERROR: board size is incorrect. Consider a number >3 and <21.");
-		return 0;
-	}
+	while(size <= 3 || size > 21) {
+		system("cls");
+		printf("ERROR: board size is incorrect. Consider a number at least >3 and <21.\n");
+		printf("Input board size: ");
+		scanf("%d", &size);
+	}	
 	return size;
 }
 
@@ -49,7 +52,7 @@ void displayBoard(int size, char** board) {
 
 int letterToInt(char coordinate, int size) {
 	char symbol = 'A';
-	for (int i = 1; i < size; i++) {
+	for (int i = 1; i < size+1; i++) {
 		if (symbol == coordinate)
 			return i;
 		symbol += 1;
