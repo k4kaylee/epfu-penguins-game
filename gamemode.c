@@ -44,7 +44,6 @@ void runInteractive(FILE* log) {
 		fprintf(log, "\n%d: %s", i + 1, players[i].name);
 	}
 
-
 	struct Board* board = malloc(sizeof(board));
 	board->grid = 0;
 	board->size = getSize();

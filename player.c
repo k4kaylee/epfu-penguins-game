@@ -152,7 +152,7 @@ char** getPossibleMoves(struct Board* board) {
 		possibleMoves[x][j] = board->grid[x][j];
 	}
 
-	possibleMoves[x][y] = 'P';
+	possibleMoves[x][y] = 'X';
 	return possibleMoves;
 }
 
