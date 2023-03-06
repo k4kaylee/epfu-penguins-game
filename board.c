@@ -3,16 +3,17 @@
 #include "player.h"
 #include "textColor.h"
 #include "gamePhase.h"
+#include "system.h"
 
 
 
 int getSize() {
-	system("cls");
+	clear();
 	int size;
 	printf("Input board size: ");
 	scanf("%d", &size);
 	while(size <= 3 || size > 21) {
-		system("cls");
+		clear();
 		setColor(12);
 		printf("ERROR: board size is incorrect. Consider a number at least >3 and <21.\n");
 		setColor(7);
@@ -36,7 +37,7 @@ char** getBoard(int size, char** board) {
 }
 
 void displayBoard(int size, char** board) {
-	system("cls");
+	clear();
 	char symbol = 'A';
 	for (int i = 0; i < size; i++)
 		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n" : "");

@@ -1,24 +1,27 @@
-#include <windows.h>
-#include <dos.h>
+#include "stdio.h"
 
 
 void setColor(int ForgC)
 {
-    WORD wColor;
-
-    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-
-    //We use csbi for the wAttributes word.
-    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
-    {
-        //Mask out all but the background attribute, and add in the forgournd color
-        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
-        SetConsoleTextAttribute(hStdOut, wColor);
+    switch (ForgC) {
+        case 0: printf("\x1B[30m"); break;
+        case 1: printf("\x1B[34m"); break;
+        case 2: printf("\x1B[32m"); break;
+        case 3: printf("\x1B[36m"); break;
+        case 4: printf("\x1B[31m"); break;
+        case 5: printf("\x1B[35m"); break;
+        case 6: printf("\x1B[30;1m"); break;
+        case 7: printf("\x1B[0m"); break;
+        case 8: printf("\x1B[0m"); break;
+        case 9: printf("\x1B[34;1m"); break;
+        case 10: printf("\x1B[32;1m"); break;
+        case 11: printf("\x1B[36;1m"); break;
+        case 12: printf("\x1B[31;1m"); break;
+        case 13: printf("\x1B[35;1m"); break;
+        case 14: printf("\x1B[33m"); break;
+        case 15: printf("\x1B[37m"); break;
     }
-    return;
 }
-
 
 
 
