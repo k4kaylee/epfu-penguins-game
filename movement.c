@@ -14,7 +14,7 @@ int checkMove() {
 
 void makeAMove(/*struct Player player, char** board, int size*/) {
 	//moves given player from its initial position to available place in the board
-	if (checkMove()) {
-
+	while (checkMove()) {
+		//As far as move is compulsory, we ask the player for correct coordinates
 	}
 };

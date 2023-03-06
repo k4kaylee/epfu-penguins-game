@@ -22,15 +22,15 @@ void placePenguin(int size, char** board, struct Player* player) {
 
 	if (letterToInt(coordinateY) == 0 || coordinateX > size) {
 		displayBoard(size, board);
-
-		printf("\n%d\n%c\n", letterToInt(coordinateY), coordinateY);
 		setColor(12);
-		printf("Something went wrong, please, try again.\n");
+		printf("ERROR: incorrect coordinate input, please, try again.\n");
 		setColor(7);
 		placePenguin(size, board, player);
+		return;
 	}
 	player->penguinX = coordinateX;
 	player->penguinY = coordinateY;
+	player->points += 1;
 
 	board[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
 }

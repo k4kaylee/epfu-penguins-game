@@ -73,6 +73,8 @@ void displayBoard(int size, char** board) {
 	printf("\n\n");
 }
 
+
+
 int letterToInt(char coordinate) {
 	return coordinate - 'A' + 1;
 }
