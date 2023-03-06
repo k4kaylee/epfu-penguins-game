@@ -3,29 +3,65 @@
 #include <stdlib.h>
 
 
-void getBoard(int size, char** board) { //initialising and displaying gameboard
-	char symbol = 'A';
-
+void getBoard(int size, char** board) { 
 	for (int i = 0; i < size; i++)
-		board[i] = malloc(sizeof(**board) * size); //dynamic memory arrangement
+		board[i] = malloc(sizeof(**board) * size); 
 
-	for (int i = 0; i < size; i++) {						//empty board initialisation. TO LEARN: ternary operator
-		printf(" %s%c%s", (i == 0) ? " " : "", symbol + i, (i == size - 1) ? "\n" : "");
+	for (int i = 0; i < size; i++) {						
+
 		for (int j = 0; j < size; j++)
-			board[i][j] = 'X';   //'X' stands for an empty board sell.
-		//TODO: find a way to fill it with fish after placement phase.
+			board[i][j] = 'X';   
 	}
 }
 
-void displayBoard(int size, char** board) {		//board displaying
+
+
+void displayBoard(int size, char** board) {		
+	char symbol = 'A';
+	for (int i = 0; i < size; i++)
+		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n" : "");
+
+	printf("\n");
+
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			if (j == 0)
-				printf("%d", i + 1);
+				printf("%d ", i + 1);
 			printf(" %c", board[i][j]);
 		}
 		printf("\n");
 	}
+	printf("\n\n");
+}
+
+
+
+void placePenguin(int size, char** board) {
+	printf("Choose your row and column: ");
+	int i, j;
+	scanf("%d%d", &i, &j);
+
+	while (size < i || size < j) {
+		printf("Try one more time!");
+		scanf("%d%d", &i, &j);
+
+	}
+
+
+	board[i - 1][j - 1] = 'P'; 
+	displayBoard(size, board);
+}
+
+
+
+
+void placeFish(int size, char** board) {
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			board[i][j] = (rand() % 4) + 48; 
+		}
+	}
+	displayBoard(size, board);
 }
 
 
@@ -34,18 +70,18 @@ int main() {
 	int size;
 	printf("Input board size: ");
 	scanf("%d", &size);
-	if (size <= 3 || size > 10) {						//Size validation.
-		printf("ERROR: board size is incorrect. Consider a number >2 and <8.");
+	if (size <= 3 || size > 9) {						
+		printf("ERROR: board size is incorrect. Consider a number >3 and <10.");
 		return 0;
 	}
 
-	char** board = 0;								//declaration. TO LEARN: dynamic memory in C, two-dimensional array.
+	char** board = 0;								
 	board = malloc(sizeof(*board) * size);
 
-	getBoard(size, board);	//board generation
-	displayBoard(size, board);						//IMPORTANT: use this function every time you need to re-disaply the board.
+	getBoard(size, board);	
+	placeFish(size, board);
+	placePenguin(size, board);
 
-	//...
 
 
 	return 0;
