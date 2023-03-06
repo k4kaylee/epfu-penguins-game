@@ -50,11 +50,11 @@ void displayBoard(struct Board* board) {
 				printf("%d%s", i + 1, (i < 9) ? " " : "");
 			
 			
-			if (board->grid[i][j] == '1' && !phase)
+			if (board->grid[i][j] == '1' && phase == PLACEMENT)
 				setColor(LIGHT_GREEN);
 
 			char** possibleMoves;
-			if (phase == 1) {
+			if (phase == MOVEMENT) {
 				possibleMoves = getPossibleMoves(board);
 				if (board->grid[i][j] == possibleMoves[i][j])
 					setColor(LIGHT_GREEN);
