@@ -8,12 +8,15 @@
 
 
 int main() {
+	FILE* log = createlog();
+	clearLogDir();
 	int gamemode = getGamemode();
 	gamemode ?
-		runInteractive()
+		runInteractive(log)
 		:
-		runAutonomous();
+		runAutonomous(log);
 	printf("\n\nPress any key to finish");
 	getChar();
+	fclose(log);
 	return 0;
 }

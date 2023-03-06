@@ -38,7 +38,7 @@ int getAmountOfPlayers() {
 int getAmountOfPenguins() {
 	int pengus;
 	clear();
-	printf("Please, input the amount of penguins(at least 1, max 3): ");
+	printf("Please, input the amount of penguins (at least 1, max 3): ");
 	scanf("%d", &pengus);
 	while (pengus < 1 || pengus > 3) {
 		clear();
@@ -153,6 +153,8 @@ char** getPossibleMoves(char** board, int size) {
 
 	possibleMoves[x][y] = 'P';
 	return possibleMoves;
+
+
 
 
 
