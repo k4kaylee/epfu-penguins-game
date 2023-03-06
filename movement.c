@@ -82,13 +82,6 @@ void makeAMove(struct Board* board) {
 
 		}
 	} while (board->grid[X][Y] != possibleMoves[X][Y]);
-
-
-	printf("%d\n", current->points);
-	getChar();
-	current->points += board->grid[X][Y] - '0';
-	printf("%d\n", current->points);
-	getChar();
 	board->grid[currentX][currentY] = 'X';
 
 
