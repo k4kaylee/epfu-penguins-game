@@ -27,7 +27,16 @@ void makeAMove(char** board, int size) {
 
 	Y = letterToInt(buffer) - 1;
 
-	while (board[X][Y] != possibleMoves[X][Y]) {
+	if (X >= size || X < 0 || Y < 0 || Y >= size) {
+		displayBoard(size, board);
+		setColor(12);
+		printf("\nERROR: incorrect coordinate input, please, try again.\n");
+		setColor(7);
+		makeAMove(board, size);
+		return;
+	}
+
+	while (board[X][Y] != possibleMoves[X][Y] || board[X][Y] == 'P') {
 		setColor(4);
 		printf("\nERROR: it is impossbile to move there.\n");
 		setColor(7);
@@ -57,14 +66,14 @@ void makeAMove(char** board, int size) {
 		}
 	}
 	else if (currentY == Y) { 
-		if (X > currentX) {
+		if (X > currentX) { // down
 			printf("X > currentX");
 			for (int i = currentX + 1; i < X; i++) {
 				current->points += (board[i][Y] - '0');
 				board[i][Y] = 'X';
 			}
 		}
-		if (X < currentX) {
+		if (X < currentX) { // up
 			for (int i = currentX - 1; i > X; i--) {
 				current->points += (board[i][Y] - '0');
 				board[i][Y] = 'X';

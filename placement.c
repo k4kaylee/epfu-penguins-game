@@ -28,12 +28,44 @@ void placePenguin(int size, char** board, struct Player* player) {
 		placePenguin(size, board, player);
 		return;
 	}
+
+
+	int x = coordinateX;
+	int y = letterToInt(coordinateY);
+	x--;
+	y--;
+
+	// check this placement is inside the board size
+	if (y < 0 || y >= size || x < 0 || x >= size) {
+		displayBoard(size, board);
+		setColor(12);
+		printf("\nERROR: incorrect coordinate input, please, try again.\n");
+		setColor(7);
+		placePenguin(size, board, player);
+		return;
+	}
+
+	//check the designated cell only has 1 fish or not
+	while (board[x][y] != '1') { // I used != 1 to avoid X, 2, 3, P.
+		setColor(12);
+		printf("\nERROR: You can't place here. Please, choose a cell with 1 fish: ");
+		setColor(7);
+		printf("\nChoose your row (ex. 1): ");
+		scanf("%d", &x);
+		printf("Choose your column: (ex. A): ");
+		scanf(" %c", &coordinateY);
+		y = letterToInt(coordinateY);
+		x--;
+		y--;
+	}
 	player->penguinX = coordinateX;
 	player->penguinY = coordinateY;
 	player->points += 1;
 
 	board[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
+
 }
+
 
 
 
