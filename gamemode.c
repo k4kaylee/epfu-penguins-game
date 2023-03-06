@@ -4,6 +4,7 @@
 #include <conio.h>
 
 #include "placement.h"
+#include "movement.h"
 #include "board.h"
 #include "player.h"
 #include "textColor.h"
@@ -51,8 +52,13 @@ void runInteractive() {
 		if (getGamePhase() == 1)
 			setCurrentPlayer(getPlayer(players, i));
 		displayBoard(size, board);
-		_getch();
+		makeAMove(board, size);
+		if (i == amountOfPlayers - 1)
+			setGamePhase(2);
 	}
+	displayBoard(size, board);
+	displayPoints(players, amountOfPlayers);
+	printf("\n\nThank you for the game! ^_^");
 };
 
 void runAutonomous() {

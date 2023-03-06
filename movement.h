@@ -1,2 +1,1 @@
-void makeAMove();
-int checkMove();
+void makeAMove(char** board, int size);
