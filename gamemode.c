@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "placement.h"
 #include "board.h"
+#include "player.h"
 
 
 
@@ -19,9 +20,16 @@ int getGamemode() {
 };
 
 void runInteractive() {
+	int amountOfPlayers = getAmountOfPlayers();
+	struct Player* players = 0;
+
+	players = getPlayers(amountOfPlayers, players);
+	displayPlayerBoard(amountOfPlayers, players);
+
 	char** board = 0;
 	int size = getSize();
 	board = getBoard(size, board);
+
 	placeFish(size, board);
 	placePenguin(size, board);
 };
