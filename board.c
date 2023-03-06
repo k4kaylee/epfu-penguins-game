@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "player.h"
+
 #include "textColor.h"
 #include "gamePhase.h"
 #include "system.h"
@@ -23,50 +23,49 @@ int getSize() {
 	return size;
 }
 
-char** getBoard(int size, char** board) {
-	board = malloc(sizeof(*board) * size);
+char** getBoard(int size) {
+	char** board = malloc(sizeof(*board) * size);
 	for (int i = 0; i < size; i++)
 		board[i] = malloc(sizeof(**board) * size);
 
 	for (int i = 0; i < size; i++) {
-
 		for (int j = 0; j < size; j++)
 			board[i][j] = 'X';
 	}
 	return board;
 }
 
-void displayBoard(int size, char** board) {
+void displayBoard(struct Board* board) {
 	clear();
 	char symbol = 'A';
-	for (int i = 0; i < size; i++)
-		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n" : "");
+	for (int i = 0; i < board->size; i++)
+		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == board->size - 1) ? "\n" : "");
 	printf("\n");
 
 	int phase = getGamePhase();
 
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < board->size; i++) {
+		for (int j = 0; j < board->size; j++) {
 			if (j == 0)
 				printf("%d%s", i + 1, (i < 9) ? " " : "");
 			
 			
-			if (board[i][j] == '1' && !phase)
+			if (board->grid[i][j] == '1' && !phase)
 				setColor(LIGHT_GREEN);
 
 			char** possibleMoves;
 			if (phase == 1) {
-				possibleMoves = getPossibleMoves(board, size);
-				if (board[i][j] == possibleMoves[i][j])
+				possibleMoves = getPossibleMoves(board);
+				if (board->grid[i][j] == possibleMoves[i][j])
 					setColor(LIGHT_GREEN);
 			}
 
-			if (board[i][j] == 'P'){
+			if (board->grid[i][j] == 'P'){
 				setColor(BLUE);
 			}
 
 
-			printf(" %c", board[i][j]);
+			printf(" %c", board->grid[i][j]);
 			setColor(LIGHT_GRAY);
 		}
 		printf("\n");

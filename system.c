@@ -9,6 +9,7 @@
 	#include <dirent.h>
 #endif
 #include "player.h"
+#include "board.h"
 
 void clear() {
 #ifdef _WIN32
@@ -100,17 +101,17 @@ FILE* createlog() {
 	return log;
 }
 
-void logBoard(int size, char** board, FILE* log) {
+void logBoard(struct Board* board, FILE* log) {
 	fprintf(log, "\n");
 	char symbol = 'A';
-	for (int i = 0; i < size; i++)
-		fprintf(log, " %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n\n" : "");
+	for (int i = 0; i < board->size; i++)
+		fprintf(log, " %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == board->size - 1) ? "\n\n" : "");
 
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < board->size; i++) {
+		for (int j = 0; j < board->size; j++) {
 			if (j == 0)
 				fprintf(log, "%d%s", i + 1, (i < 9) ? " " : "");
-			fprintf(log, " %c", board[i][j]);
+			fprintf(log, " %c", board->grid[i][j]);
 		}
 		fprintf(log, "\n");
 	}
