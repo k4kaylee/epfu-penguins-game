@@ -25,9 +25,9 @@ int getAmountOfPlayers() {
 	scanf("%d", &amount);
 	while (amount < 1 || amount > 5) {
 		clear();
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("ERROR: incorrect player amount. Please, type it again (at least 1, max 5): ");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		scanf("%d", &amount);
 	}
 	clear();
@@ -42,9 +42,9 @@ int getAmountOfPenguins() {
 	scanf("%d", &pengus);
 	while (pengus < 1 || pengus > 3) {
 		clear();
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("ERROR: incorrect penguins amount. Please, type it again (at least 1, max 3): ");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		scanf("%d", &pengus);
 	}
 	clear();
@@ -78,9 +78,9 @@ void checkPlayerData(int amount, struct Player* players) {
 		scanf("%d", &playerId);
 		--playerId;
 		while (playerId > amount || playerId < 0) {
-			setColor(12);
+			setColor(LIGHT_RED);
 			printf("\n\nERROR: no player with such an ID. Input again: ");
-			setColor(7);
+			setColor(LIGHT_GRAY);
 			scanf("%d", &playerId);
 		}
 		
@@ -177,9 +177,9 @@ void displayPoints(struct Player* players, int amount) {
 		current = getCurrentPlayer();
 		printf("\n%s: %d", current->name, current->points);
 		if (current->points == max) {
-			setColor(12);
+			setColor(LIGHT_RED);
 			printf(" - WINNER!");
-			setColor(7);
+			setColor(LIGHT_GRAY);
 		}
 	}
 }

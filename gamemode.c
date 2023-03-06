@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <direct.h>
-#include <conio.h>
 
 #include "placement.h"
 #include "movement.h"
@@ -21,9 +19,9 @@ int getGamemode() {
 	while (isInteractive != 0 && isInteractive != 1) {
 		clear();
 		printf("%d\n", isInteractive);
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("ERROR: incorrect gamemode input.\nPlease, choose gamemode again (0 - autunomous, 1 - interactive): ");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		scanf("%d", &isInteractive);
 	}
 	return isInteractive;
@@ -68,14 +66,14 @@ void runInteractive(FILE* log) {
 	}
 
 
-	fprintf(log, "\n\nMOVEMENT:");
+	fprintf(log, "\n\nMOVEMENT:\n");
 	for (int i = 0; i < amountOfPlayers; i++) {
 		if (getGamePhase() == 1)
 			setCurrentPlayer(getPlayer(players, i));
 		displayBoard(size, board);
 		makeAMove(board, size);
 		current = getPlayer(players, i);
-		fprintf(log, "\n%s moves their penguin to %d %c\n", current->name, current->penguinX, current->penguinY + 1);
+		fprintf(log, "%s moves their penguin to %d %c\n", current->name, current->penguinX, current->penguinY + 1);
 		if (i == amountOfPlayers - 1)
 			setGamePhase(2);
 	}
@@ -115,7 +113,7 @@ void runAutonomous(FILE* log) {
 		setCurrentPlayer(getPlayer(players, i));
 		current = getPlayer(players, i);
 		//_getcwd(buf, BUFSIZ); needs to be tested for linux
-		snprintf(buf, sizeof(buf), "%s\\programs\\%s", _getcwd(buf, BUFSIZ), dirList[current->fileID - 1] );
+		snprintf(buf, sizeof(buf), "%s\\programs\\%s", getCWD(buf, BUFSIZ), dirList[current->fileID - 1] );
 		clear();
 		system(buf);
 		fprintf(log, "%s is running %s\n", current->name, dirList[current->fileID - 1]);

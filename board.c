@@ -14,9 +14,9 @@ int getSize() {
 	scanf("%d", &size);
 	while(size <= 3 || size > 21) {
 		clear();
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("ERROR: board size is incorrect. Consider a number at least >3 and <21.\n");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		printf("Input board size: ");
 		scanf("%d", &size);
 	}	
@@ -52,30 +52,24 @@ void displayBoard(int size, char** board) {
 			
 			
 			if (board[i][j] == '1' && !phase)
-				setColor(10);
+				setColor(LIGHT_GREEN);
 
 			char** possibleMoves;
 			if (phase == 1) {
 				possibleMoves = getPossibleMoves(board, size);
 				if (board[i][j] == possibleMoves[i][j])
-					setColor(10);
+					setColor(LIGHT_GREEN);
 			}
 
 			if (board[i][j] == 'P'){
-				setColor(1);
+				setColor(BLUE);
 			}
 
 
 			printf(" %c", board[i][j]);
-			setColor(7);
+			setColor(LIGHT_GRAY);
 		}
 		printf("\n");
 	}
 	printf("\n\n");
-}
-
-
-
-int letterToInt(char coordinate) {
-	return coordinate - 'A' + 1;
 }

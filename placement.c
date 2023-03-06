@@ -1,30 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
+
 #include "board.h"
+#include "system.h"
 #include "gamemode.h"
 #include "player.h"
 #include "textColor.h"
 #include "gamePhase.h"
 
-#include <conio.h>
-#include <ctype.h>
-
 
 void placePenguin(int size, char** board, struct Player* player) {
 	printf("\n%s's turn\n", player->name);
-	printf("Choose your row (ex. 1): ");
+	printf("Choose your row (for example 1): ");
 	int coordinateX;
 	scanf("%d", &coordinateX);
 	char coordinateY;
-	printf("Choose your column: (ex. A): ");
+	printf("Choose your column: (for example A): ");
 	scanf(" %c", &coordinateY);
+	coordinateY = (char)toupper(coordinateY);
 
 	if (letterToInt(coordinateY) == 0 || coordinateX > size) {
 		displayBoard(size, board);
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("ERROR: incorrect coordinate input, please, try again.\n");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		placePenguin(size, board, player);
 		return;
 	}
@@ -38,18 +39,18 @@ void placePenguin(int size, char** board, struct Player* player) {
 	// check this placement is inside the board size
 	if (y < 0 || y >= size || x < 0 || x >= size) {
 		displayBoard(size, board);
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		placePenguin(size, board, player);
 		return;
 	}
 
 	//check the designated cell only has 1 fish or not
 	while (board[x][y] != '1') { // I used != 1 to avoid X, 2, 3, P.
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("\nERROR: You can't place here. Please, choose a cell with 1 fish: ");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		printf("\nChoose your row (ex. 1): ");
 		scanf("%d", &x);
 		printf("Choose your column: (ex. A): ");
