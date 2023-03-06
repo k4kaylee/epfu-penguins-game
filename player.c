@@ -4,6 +4,7 @@
 #include "player.h"
 #include "textColor.h"
 #include "board.h"
+#include "system.h"
 
 
 
@@ -19,18 +20,35 @@ void setCurrentPlayer(struct Player* player) {
 
 int getAmountOfPlayers() {
 	int amount;
-	system("cls");
+	clear();
 	printf("Please, input the amount of players (at least 1, max 5): ");
 	scanf("%d", &amount);
 	while (amount < 1 || amount > 5) {
-		system("cls");
+		clear();
 		setColor(12);
 		printf("ERROR: incorrect player amount. Please, type it again (at least 1, max 5): ");
 		setColor(7);
 		scanf("%d", &amount);
 	}
-	system("cls");
+	clear();
 	return amount;
+};
+
+
+int getAmountOfPenguins() {
+	int pengus;
+	clear();
+	printf("Please, input the amount of penguins(at least 1, max 3): ");
+	scanf("%d", &pengus);
+	while (pengus < 1 || pengus > 3) {
+		clear();
+		setColor(12);
+		printf("ERROR: incorrect penguins amount. Please, type it again (at least 1, max 3): ");
+		setColor(7);
+		scanf("%d", &pengus);
+	}
+	clear();
+	return pengus;
 };
 
 struct Player* getAllPlayers(int amount, struct Player* players) {
@@ -77,7 +95,7 @@ void checkPlayerData(int amount, struct Player* players) {
 }
 
 void displayPlayerBoard(int amount, struct Player* players) {
-	system("cls");
+	clear();
 	printf("List of Players: \n");
 	for(int i = 0; i < amount; i++)
 		printf("Name: %s\nID: %d\nPoints: %d\n\n", players[i].name, players[i].id, players[i].points);
@@ -163,3 +181,14 @@ void displayPoints(struct Player* players, int amount) {
 		}
 	}
 }
+
+void getPlayerFile(int amountOfFiles) {
+	int fileID;
+	struct Player* current = getCurrentPlayer();
+	do {
+		printf("%s, choose the number of your program: ", current->name);
+		scanf("%d", &fileID);
+	} while (fileID <= 0 || fileID > amountOfFiles);
+	current->fileID = fileID;
+}
+

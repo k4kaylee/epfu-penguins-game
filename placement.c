@@ -69,7 +69,6 @@ void placePenguin(int size, char** board, struct Player* player) {
 
 
 
-
 void placeFish(int size, char** board, int amount) {
 	int availableCells = 0;
 	srand((unsigned int)time(NULL));
