@@ -1,84 +1,105 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "board.h"
+#include "penguinID.h"
 #include "system.h"
 #include "player.h"
 #include "textColor.h"
 
 
 
+void choosePenguin(struct Board* board, struct Player* player) { //Michal's function
+
+	int ID = 0;
+	int xpen;
+	char ypen;
+
+	printf("\n%s's move\n", player->name);
+	printf("choose penguin you want to move\n");
+	printf("\nInput number of the row (for example, 1): ");
+	scanf("%d", &xpen);
+	printf("Input number of the row (for example, A): ");
+	scanf(" %c", &ypen);
+
+	if ((xpen == player->penguinX[0]) && (ypen == player->penguinY[0])) {
+		ID = 0;
+	}
+	else if ((xpen == player->penguinX[1]) && (ypen == player->penguinY[1])) {
+		ID = 1;
+	}
+	else if ((xpen == player->penguinX[2]) && (ypen == player->penguinY[2])) {
+		ID = 2;
+	}
+
+	else {
+		displayBoard(board);
+		setColor(LIGHT_RED);
+		printf("\nERROR: incorrect coordinate input, please, try again.\n");
+		setColor(LIGHT_GRAY);
+		choosePenguin(board, player);
+
+	}
+	setPenguinID(ID);
+}
+
+
+
 void makeAMove(struct Board* board) {
 	//moves given player from its initial position to available place in the board
-	struct Player* current = getCurrentPlayer();
 
-	printf("\n%s's move\n", current->name);
-	int currentX = current->penguinX - 1;
-	int currentY = letterToInt(current->penguinY) - 1;
+	struct Player* current = getCurrentPlayer();
+	int ID = getPenguinID();
+
+	int currentX = current->penguinX[ID] - 1;
+	int currentY = letterToInt(current->penguinY[ID]) - 1;
 
 	char** possibleMoves = getPossibleMoves(board);
 
 	int X;
 	int Y;
 	char buffer;
-
-
-	printf("\nInput number of the row to move (ex. 1): ");
-	scanf("%d", &X);
-	X--;
-	printf("Input number of the column to move (ex. A): ");
-	scanf(" %c", &buffer);
-	buffer = (char)toupper(buffer);
-	Y = letterToInt(buffer) - 1;
-
-	if (X >= board->size || X < 0 || Y < 0 || Y >= board->size) {
-		displayBoard(board);
-		setColor(LIGHT_RED);
-		printf("\nERROR: incorrect coordinate input, please, try again.\n");
-		setColor(LIGHT_GRAY);
-		makeAMove(board);
-		return;
-	}
-	
-	while (board->grid[X][Y] != possibleMoves[X][Y] || board->grid[X][Y] == 'P') {
-		setColor(LIGHT_RED);
-		printf("\nERROR: it is impossbile to move there.\n");
-		setColor(LIGHT_GRAY);
-		printf("Input number of the row to move (ex. 1): ");
+	do {
+		printf("\nInput number of the row to move (ex. 1): ");
 		scanf("%d", &X);
 		X--;
 		printf("Input number of the column to move (ex. A): ");
 		scanf(" %c", &buffer);
 		Y = letterToInt(buffer) - 1;
-	}
 
+		if (X >= board->size || X < 0 || Y < 0 || Y >= board->size) {
+			displayBoard(board);
+			setColor(LIGHT_RED);
+			printf("\nERROR: incorrect coordinate input, please, try again.\n");
+			setColor(LIGHT_GRAY);
+
+		}
+
+		if (board->grid[X][Y] != possibleMoves[X][Y] || board->grid[X][Y] == 'P') {
+			displayBoard(board);
+			setColor(LIGHT_RED);
+			printf("\nERROR: it is impossbile to move there.\n");
+			setColor(LIGHT_GRAY);
+
+		}
+	} while (board->grid[X][Y] != possibleMoves[X][Y]);
+
+
+	printf("%d\n", current->points);
+	getChar();
 	current->points += board->grid[X][Y] - '0';
+	printf("%d\n", current->points);
+	getChar();
 	board->grid[currentX][currentY] = 'X';
+
+
 	board->grid[X][Y] = 'P';
-	
-	Y += 'A' - 1;
-	current->penguinX = X + 1;
-	current->penguinY = (char)Y;
-	displayBoard(board);
+
+	current->penguinX[ID] = X + 1;
+	current->penguinY[ID] = (char)(Y + 1);
+
 };
 
 
-
-//In case we will have several penguins for 1 player
-
-/*
-void choose_penguin(int d, char ID, char board[][d], int* A, int* B)
-{
-  printf("\nEnter the cordinate of the penguin you want to move: ");
-  do
-  {
-	scanf("%d %d", &A, &B);
-	if (board[*A][*B] != ID)
-	{
-	  printf("\nThe coordinate you wany to move does not contain one of your penguins, try again.");
-	}
-  } while (board[*A][*B] != ID);
-}
-*/
 
 
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "player.h"
+#include "penguinID.h"
 #include "textColor.h"
 #include "board.h"
 #include "system.h"
@@ -122,10 +123,10 @@ char** getPossibleMoves(struct Board* board) {
 			possibleMoves[i][j] = '0';
 	}
 
+	int pengID = getPenguinID();
 
-
-	int x = current->penguinX - 1;
-	int y = letterToInt(current->penguinY) - 1;
+	int x = current->penguinX[pengID] - 1;
+	int y = letterToInt(current->penguinY[pengID]) - 1;
 
 	for (int i = x + 1; i < board->size; i++) {
 		if (board->grid[i][y] == 'X' || board->grid[i][y] == 'P')

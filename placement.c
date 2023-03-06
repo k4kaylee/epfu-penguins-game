@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #include "board.h"
+#include "penguinID.h"
 #include "system.h"
 #include "gamemode.h"
 #include "player.h"
@@ -12,6 +13,8 @@
 
 
 void placePenguin(struct Board* board, struct Player* player) {
+	int pengID = getPenguinID();
+
 	printf("\n%s's turn\n", player->name);
 	printf("Choose your row (for example 1): ");
 	int coordinateX;
@@ -59,12 +62,12 @@ void placePenguin(struct Board* board, struct Player* player) {
 		x--;
 		y--;
 	}
-	player->penguinX = coordinateX;
-	player->penguinY = coordinateY;
+
+	player->penguinX[pengID] = coordinateX;
+	player->penguinY[pengID] = coordinateY;
 	player->points += 1;
 
-	board->grid[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
-
+	board->grid[player->penguinX[pengID] - 1][letterToInt(player->penguinY[pengID]) - 1] = 'P';
 }
 
 
