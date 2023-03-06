@@ -208,7 +208,10 @@ void displayPoints() {
 	for (int i = 0; i < amountOfPlayers; i++) {
 		setCurrentPlayer(getPlayer(i));
 		current = getCurrentPlayer();
-		printf("\n%s: %d", current->name, current->points);
+		setColor(current->color);
+		printf("\n%s", current->name);
+		setColor(LIGHT_GRAY);
+		printf(": %d", current->points);
 		if (current->points == max) {
 			setColor(LIGHT_RED);
 			printf(" - WINNER!");

@@ -8,14 +8,16 @@
 
 
 
-void choosePenguin(struct Board* board) { //Michal's function
+	void choosePenguin(struct Board* board) { //Michal's function
 
-	int ID = 0;
 	int xpen;
 	char ypen;
 
 	struct Player* current = getCurrentPlayer();
-	printf("\n%s's move\n", current->name);
+	setColor(current->color);
+	printf("\n%s", current->name);
+	setColor(LIGHT_GRAY);
+	printf("'s move\n");
 	printf("choose penguin you want to move\n");
 	printf("\nInput number of the row (for example, 1): ");
 	scanf("%d", &xpen);
@@ -24,15 +26,14 @@ void choosePenguin(struct Board* board) { //Michal's function
 	ypen = (char)toupper(ypen);
 
 	if ((xpen == current->penguinX[0]) && (ypen == current->penguinY[0])) {
-		ID = 0;
+		setPenguinID(0);
 	}
 	else if ((xpen == current->penguinX[1]) && (ypen == current->penguinY[1])) {
-		ID = 1;
+		setPenguinID(1);
 	}
 	else if ((xpen == current->penguinX[2]) && (ypen == current->penguinY[2])) {
-		ID = 2;
+		setPenguinID(2);
 	}
-
 	else {
 		displayBoard(board);
 		setColor(LIGHT_RED);
@@ -41,7 +42,6 @@ void choosePenguin(struct Board* board) { //Michal's function
 		choosePenguin(board);
 
 	}
-	setPenguinID(ID);
 }
 
 

@@ -4,8 +4,8 @@ struct Player {
 	char* name;
 	int id;
 	int points;
-	int penguinX[3];
-	char penguinY[3];
+	int* penguinX;
+	char* penguinY;
 	int color;
 	int fileID;
 };
