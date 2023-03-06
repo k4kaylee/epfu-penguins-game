@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "player.h"
+#include "textColor.h"
 
 
 
@@ -11,7 +12,9 @@ int getSize() {
 	scanf("%d", &size);
 	while(size <= 3 || size > 21) {
 		system("cls");
+		setColor(12);
 		printf("ERROR: board size is incorrect. Consider a number at least >3 and <21.\n");
+		setColor(7);
 		printf("Input board size: ");
 		scanf("%d", &size);
 	}	
@@ -31,7 +34,7 @@ char** getBoard(int size, char** board) {
 	return board;
 }
 
-void displayBoard(int size, char** board) {
+void displayBoard(int size, char** board, int isMovement) {
 	system("cls");
 	char symbol = 'A';
 	for (int i = 0; i < size; i++)
@@ -43,7 +46,16 @@ void displayBoard(int size, char** board) {
 		for (int j = 0; j < size; j++) {
 			if (j == 0)
 				printf("%d%s", i + 1, (i < 9) ? " " : "");
+			
+
+			if (board[i][j] == '1' && !isMovement)
+				setColor(10);
+
+			if (board[i][j] == 'P')
+				setColor(1);
+
 			printf(" %c", board[i][j]);
+			setColor(7);
 		}
 		printf("\n");
 	}

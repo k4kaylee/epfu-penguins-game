@@ -1,4 +1,4 @@
-char** getBoard(int size, char** board);
+char** getBoard();
 int getSize();
-int letterToInt(char coordinate, int size);
-void displayBoard(int size, char** board);
+int letterToInt();
+void displayBoard();

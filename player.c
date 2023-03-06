@@ -3,6 +3,7 @@
 #include <string.h>
 #include <conio.h>
 #include "player.h"
+#include "textColor.h"
 
 int getAmountOfPlayers() {
 	int amount;
@@ -11,15 +12,18 @@ int getAmountOfPlayers() {
 	scanf("%d", &amount);
 	while (amount < 1 || amount > 5) {
 		system("cls");
+		setColor(12);
 		printf("ERROR: incorrect player amount. Please, type it again (at least 1, max 5): ");
+		setColor(7);
 		scanf("%d", &amount);
 	}
+	system("cls");
 	return amount;
 };
 
 struct Player* getAllPlayers(int amount, struct Player* players) {
 	for (int i = 0; i < amount; i++) {
-		printf("\n%d out of %d\n", i + 1, amount);
+		printf("%s%d out of %d\n", (i != 0) ? "\n" : "", i + 1, amount);
 		printf("Hi Player %d! How should I call you?: ", i + 1);
 
 		char* name = malloc(sizeof(char) * 20);
