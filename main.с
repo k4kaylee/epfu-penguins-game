@@ -14,19 +14,29 @@ void getBoard(int size, char** board) {
 	}
 }
 
-
+int getSize() {
+	int size;
+	printf("Input board size: ");
+	scanf("%d", &size);
+	if (size <= 3 || size > 21) {
+		printf("ERROR: board size is incorrect. Consider a number >3 and <21.");
+		return 0;
+	}
+	return size;
+}
 
 void displayBoard(int size, char** board) {		
+	system("cls");
 	char symbol = 'A';
 	for (int i = 0; i < size; i++)
 		printf(" %s%c%s", (i == 0) ? "  " : "", symbol + i, (i == size - 1) ? "\n" : "");
-
 	printf("\n");
+
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			if (j == 0)
-				printf("%d ", i + 1);
+				printf("%d%s", i + 1, (i < 9) ? " " : "");
 			printf(" %c", board[i][j]);
 		}
 		printf("\n");
@@ -34,21 +44,32 @@ void displayBoard(int size, char** board) {
 	printf("\n\n");
 }
 
-
+int letterToInt(char coordinate, int size) {
+	char symbol = 'A';
+	for (int i = 1; i < size; i++) {
+		if (symbol == coordinate)
+			return i;
+		symbol += 1;
+	}
+	return 0;
+}
 
 void placePenguin(int size, char** board) {
-	printf("Choose your row and column: ");
-	int i, j;
-	scanf("%d%d", &i, &j);
+	printf("Choose your row (ex. 1): ");
+	int coordinateX;
+	scanf("%d", &coordinateX);
+	char coordinateY;
+	printf("Choose your column: (ex. A): ");
+	scanf(" %c", &coordinateY);	
 
-	while (size < i || size < j) {
-		printf("Try one more time!");
-		scanf("%d%d", &i, &j);
-
+	if (letterToInt(coordinateY, size) == 0 || coordinateX > size) {
+		displayBoard(size, board);
+		
+		printf("Something went wrong, please, try again.\n");
+		placePenguin(size, board);
 	}
-
-
-	board[i - 1][j - 1] = 'P'; 
+	for (int c = getchar(); c != '\n' && c != EOF; c = getchar());
+	board[coordinateX - 1][letterToInt(coordinateY ,size) - 1] = 'P';
 	displayBoard(size, board);
 }
 
@@ -58,7 +79,7 @@ void placePenguin(int size, char** board) {
 void placeFish(int size, char** board) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			board[i][j] = (rand() % 4) + 48; 
+			board[i][j] = (rand() % 4) + '0';
 		}
 	}
 	displayBoard(size, board);
@@ -67,13 +88,7 @@ void placeFish(int size, char** board) {
 
 
 int main() {
-	int size;
-	printf("Input board size: ");
-	scanf("%d", &size);
-	if (size <= 3 || size > 9) {						
-		printf("ERROR: board size is incorrect. Consider a number >3 and <10.");
-		return 0;
-	}
+	int size = getSize();
 
 	char** board = 0;								
 	board = malloc(sizeof(*board) * size);
@@ -81,6 +96,7 @@ int main() {
 	getBoard(size, board);	
 	placeFish(size, board);
 	placePenguin(size, board);
+
 
 
 
