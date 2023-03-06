@@ -106,7 +106,6 @@ char** getPossibleMoves(char** board, int size) {
 
 
 
-	//How can i get information from structure in another function?
 	int x = current->penguinX - 1;
 	int y = letterToInt(current->penguinY) - 1;
 
@@ -133,6 +132,7 @@ char** getPossibleMoves(char** board, int size) {
 			break;
 		possibleMoves[x][j] = board[x][j];
 	}
+
 	possibleMoves[x][y] = 'P';
 	return possibleMoves;
 
@@ -141,3 +141,25 @@ char** getPossibleMoves(char** board, int size) {
 }
 
 
+void displayPoints(struct Player* players, int amount) {
+	printf("SCORE:");
+	struct Player* current;
+	int max = 0;
+	for (int i = 0; i < amount; i++) {
+		setCurrentPlayer(getPlayer(players, i));
+		current = getCurrentPlayer();
+		if (current->points > max)
+			max = current->points;
+	}
+
+	for (int i = 0; i < amount; i++) {
+		setCurrentPlayer(getPlayer(players, i));
+		current = getCurrentPlayer();
+		printf("\n%s: %d", current->name, current->points);
+		if (current->points == max) {
+			setColor(12);
+			printf(" - WINNER!");
+			setColor(7);
+		}
+	}
+}

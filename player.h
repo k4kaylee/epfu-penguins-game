@@ -17,4 +17,5 @@ int getAmountOfPlayers(void); //getting amount of players (1 < amount < 5)
 void displayPlayerBoard(int amount, struct Player* players); //displays all players with their names, IDs and points
 struct Player* getPlayer(struct Player* players, int i); //gets player from 'players' by a given ID
 void checkPlayerData(int amount, struct Player* players); //allows to change players name by ID if there is a mistake
-char** getPossibleMoves(char** board, int size); //analyses all possible moves for a given player and returns the array that contains them 
+char** getPossibleMoves(char** board, int size); //analyses all possible moves for a given player and returns the array that contains them
+void displayPoints(struct Player* players, int amount);

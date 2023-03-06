@@ -54,7 +54,7 @@ void displayBoard(int size, char** board) {
 				setColor(10);
 
 			char** possibleMoves;
-			if (phase) {
+			if (phase == 1) {
 				possibleMoves = getPossibleMoves(board, size);
 				if (board[i][j] == possibleMoves[i][j])
 					setColor(10);
