@@ -1,4 +1,5 @@
 #pragma once
+#include "board.h"
 struct Player { 
 	char* name;
 	int id;
@@ -19,6 +20,6 @@ int getAmountOfPenguins(void); //function for getting ammount of penguins per pl
 void displayPlayerBoard(int amount, struct Player* players); //displays all players with their names, IDs and points
 struct Player* getPlayer(struct Player* players, int i); //gets player from 'players' by a given ID
 void checkPlayerData(int amount, struct Player* players); //allows to change players name by ID if there is a mistake
-char** getPossibleMoves(char** board, int size); //analyses all possible moves for a given player and returns the array that contains them
+char** getPossibleMoves(struct Board* board); //analyses all possible moves for a given player and returns the array that contains them
 void displayPoints(struct Player* players, int amount);
 void getPlayerFile(int amountOfFiles);

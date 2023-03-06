@@ -7,7 +7,7 @@
 
 
 
-void makeAMove(char** board, int size) {
+void makeAMove(struct Board* board) {
 	//moves given player from its initial position to available place in the board
 	struct Player* current = getCurrentPlayer();
 
@@ -15,7 +15,7 @@ void makeAMove(char** board, int size) {
 	int currentX = current->penguinX - 1;
 	int currentY = letterToInt(current->penguinY) - 1;
 
-	char** possibleMoves = getPossibleMoves(board, size);
+	char** possibleMoves = getPossibleMoves(board);
 
 	int X;
 	int Y;
@@ -30,16 +30,16 @@ void makeAMove(char** board, int size) {
 	buffer = (char)toupper(buffer);
 	Y = letterToInt(buffer) - 1;
 
-	if (X >= size || X < 0 || Y < 0 || Y >= size) {
-		displayBoard(size, board);
+	if (X >= board->size || X < 0 || Y < 0 || Y >= board->size) {
+		displayBoard(board);
 		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
-		makeAMove(board, size);
+		makeAMove(board);
 		return;
 	}
 	
-	while (board[X][Y] != possibleMoves[X][Y] || board[X][Y] == 'P') {
+	while (board->grid[X][Y] != possibleMoves[X][Y] || board->grid[X][Y] == 'P') {
 		setColor(LIGHT_RED);
 		printf("\nERROR: it is impossbile to move there.\n");
 		setColor(LIGHT_GRAY);
@@ -51,14 +51,14 @@ void makeAMove(char** board, int size) {
 		Y = letterToInt(buffer) - 1;
 	}
 
-	current->points += board[X][Y] - '0';
-	board[currentX][currentY] = 'X';
-	board[X][Y] = 'P';
+	current->points += board->grid[X][Y] - '0';
+	board->grid[currentX][currentY] = 'X';
+	board->grid[X][Y] = 'P';
 	
 	Y += 'A' - 1;
 	current->penguinX = X + 1;
 	current->penguinY = (char)Y;
-	displayBoard(size, board);
+	displayBoard(board);
 };
 
 

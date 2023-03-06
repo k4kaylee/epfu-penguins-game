@@ -1,1 +1,1 @@
-void makeAMove(char** board, int size);
+void makeAMove(struct Board* board);

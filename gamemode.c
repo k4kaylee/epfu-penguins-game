@@ -43,22 +43,24 @@ void runInteractive(FILE* log) {
 		fprintf(log, "\n%d: %s", i + 1, players[i].name);
 	}
 
-	char** board = 0;
-	int size = getSize();
-	board = getBoard(size, board);
+
+	struct Board* board = malloc(sizeof(board));
+	board->grid = 0;
+	board->size = getSize();
+	board->grid = getBoard(board->size);
 	struct Player* current;
 
-	placeFish(size, board, amountOfPlayers * amountOfPenguins);
+	placeFish(board, amountOfPlayers * amountOfPenguins);
 
 
 	fprintf(log, "\n\nPLACEMENT:");
-	logBoard(size, board, log);
+	logBoard(board, log);
 	for (int j = 0; j < amountOfPenguins; j++) {
 		for (int i = 0; i < amountOfPlayers; i++) {
-			placePenguin(size, board, getPlayer(players, i));
+			placePenguin(board, getPlayer(players, i));
 			current = getPlayer(players, i);
 			fprintf(log, "\n%s places their penguin at %d %c", current->name, current->penguinX, current->penguinY);
-			displayBoard(size, board);
+			displayBoard(board);
 		}
 		if (j == amountOfPenguins - 1) {
 			setGamePhase(1);
@@ -70,15 +72,15 @@ void runInteractive(FILE* log) {
 	for (int i = 0; i < amountOfPlayers; i++) {
 		if (getGamePhase() == 1)
 			setCurrentPlayer(getPlayer(players, i));
-		displayBoard(size, board);
-		makeAMove(board, size);
+		displayBoard(board);
+		makeAMove(board);
 		current = getPlayer(players, i);
 		fprintf(log, "%s moves their penguin to %d %c\n", current->name, current->penguinX, current->penguinY + 1);
 		if (i == amountOfPlayers - 1)
 			setGamePhase(2);
 	}
-	displayBoard(size, board);
-	logBoard(size, board, log);
+	displayBoard(board);
+	logBoard(board, log);
 	displayPoints(players, amountOfPlayers);
 	logPoints(players, amountOfPlayers, log);
 	printf("\n\nThank you for the game! ^_^");

@@ -11,7 +11,7 @@
 #include "gamePhase.h"
 
 
-void placePenguin(int size, char** board, struct Player* player) {
+void placePenguin(struct Board* board, struct Player* player) {
 	printf("\n%s's turn\n", player->name);
 	printf("Choose your row (for example 1): ");
 	int coordinateX;
@@ -21,12 +21,12 @@ void placePenguin(int size, char** board, struct Player* player) {
 	scanf(" %c", &coordinateY);
 	coordinateY = (char)toupper(coordinateY);
 
-	if (letterToInt(coordinateY) == 0 || coordinateX > size) {
-		displayBoard(size, board);
+	if (letterToInt(coordinateY) == 0 || coordinateX > board->size) {
+		displayBoard(board);
 		setColor(LIGHT_RED);
 		printf("ERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
-		placePenguin(size, board, player);
+		placePenguin(board, player);
 		return;
 	}
 
@@ -37,17 +37,17 @@ void placePenguin(int size, char** board, struct Player* player) {
 	y--;
 
 	// check this placement is inside the board size
-	if (y < 0 || y >= size || x < 0 || x >= size) {
-		displayBoard(size, board);
+	if (y < 0 || y >= board->size || x < 0 || x >= board->size) {
+		displayBoard(board);
 		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
-		placePenguin(size, board, player);
+		placePenguin(board, player);
 		return;
 	}
 
 	//check the designated cell only has 1 fish or not
-	while (board[x][y] != '1') { // I used != 1 to avoid X, 2, 3, P.
+	while (board->grid[x][y] != '1') { // I used != 1 to avoid X, 2, 3, P.
 		setColor(LIGHT_RED);
 		printf("\nERROR: You can't place here. Please, choose a cell with 1 fish: ");
 		setColor(LIGHT_GRAY);
@@ -63,33 +63,33 @@ void placePenguin(int size, char** board, struct Player* player) {
 	player->penguinY = coordinateY;
 	player->points += 1;
 
-	board[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
+	board->grid[player->penguinX - 1][letterToInt(player->penguinY) - 1] = 'P';
 
 }
 
 
 
-
-void placeFish(int size, char** board, int amount) {
+void placeFish(struct Board* board, int amount) {
 	int availableCells = 0;
+
 	srand((unsigned int)time(NULL));
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			board[i][j] = (rand() % 4) + '0';
-			if (board[i][j] == '1') {
+	for (int i = 0; i < board->size; i++) {
+		for (int j = 0; j < board->size; j++) {
+			board->grid[i][j] = (rand() % 4) + '0';
+			if (board->grid[i][j] == '1') {
 				availableCells = availableCells + 1;
 			}
-			if (board[i][j] == '0') {
-				board[i][j] = 'X';
+			if (board->grid[i][j] == '0') {
+				board->grid[i][j] = 'X';
 			}
 
 		}
 	}
 
 	if (availableCells < amount) {
-		placeFish(size, board, amount);
+		placeFish(board, amount);
 	}
-	displayBoard(size, board);
+	displayBoard(board);
 
 }
 
