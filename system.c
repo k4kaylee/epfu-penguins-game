@@ -1,8 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <conio.h>
 #include <time.h>
-#include "dirent.h"
+#ifdef _WIN32
+	#include <conio.h>
+	#include <direct.h>
+	#include "dirent.h"
+#else
+	#include <dirent.h>
+#endif
 #include "player.h"
 
 void clear() {
@@ -21,6 +26,18 @@ void getChar() {
 #endif
 }
 
+char* getCWD(char* buf, int bufsize) {
+#ifdef _WIN32
+	return _getcwd(buf, bufsize);
+#else;
+	return getcwd(buf, bufsize);
+#endif
+}
+
+
+int letterToInt(char coordinate) {
+	return coordinate - 'A' + 1;
+}
 
 void clearLogDir() {
 	int amountOfFiles = 0;

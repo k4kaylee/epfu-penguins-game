@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "board.h"
+#include "system.h"
 #include "player.h"
 #include "textColor.h"
 
@@ -19,27 +21,28 @@ void makeAMove(char** board, int size) {
 	int Y;
 	char buffer;
 
+
 	printf("\nInput number of the row to move (ex. 1): ");
 	scanf("%d", &X);
 	X--;
 	printf("Input number of the column to move (ex. A): ");
 	scanf(" %c", &buffer);
-
+	buffer = (char)toupper(buffer);
 	Y = letterToInt(buffer) - 1;
 
 	if (X >= size || X < 0 || Y < 0 || Y >= size) {
 		displayBoard(size, board);
-		setColor(12);
+		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		makeAMove(board, size);
 		return;
 	}
-
+	
 	while (board[X][Y] != possibleMoves[X][Y] || board[X][Y] == 'P') {
-		setColor(4);
+		setColor(LIGHT_RED);
 		printf("\nERROR: it is impossbile to move there.\n");
-		setColor(7);
+		setColor(LIGHT_GRAY);
 		printf("Input number of the row to move (ex. 1): ");
 		scanf("%d", &X);
 		X--;

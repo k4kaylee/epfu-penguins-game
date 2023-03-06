@@ -5,4 +5,6 @@ void getChar(void); //get symbol in any system
 FILE* createlog(void); //initialise log file
 void logBoard(int size, char** board, FILE* log); //print board in log file
 void logPoints(struct Player* players, int amountOfPlayers, FILE* log); //print scoreboard in log
-void clearLogDir(void);
+void clearLogDir(void); //deletes the oldest file in 'gamelogs' directory if the amount of log files is >5
+char* getCWD(char* buf, int byteSize); //gets current file directory and puts it in 'buf'
+int letterToInt(char coordinate);//custom function used to translate coordinates on x-axis from symbols to numbers
