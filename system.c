@@ -12,6 +12,7 @@
 	#include <errno.h>
 #endif
 #include "player.h"
+#include "system.h"
 #include "board.h"
 
 void clear() {
@@ -97,7 +98,7 @@ FILE* createlog() {
 		/* File not created hence exit */
 		printf("Unable to create log file. Press any key to continue.\n");
 		getChar();
-		exit(EXIT_FAILURE);
+		return fopen(NULL_FILE, "w");
 	}
 
 	fprintf(log, "'Hey! That's my fish' log #X\n");

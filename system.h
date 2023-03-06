@@ -1,4 +1,9 @@
 #include "player.h"
+#ifdef _WIN32
+#define NULL_FILE "NUL"
+#else
+#define NULL_FILE "/dev/null"
+#endif
 
 void clear(void); //clear console in any system
 void getChar(void); //get symbol in any system
