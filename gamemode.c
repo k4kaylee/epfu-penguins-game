@@ -31,7 +31,7 @@ void runInteractive() {
 	int size = getSize();
 	board = getBoard(size, board);
 
-	placeFish(size, board);
+	placeFish(size, board, amountOfPlayers);
 	
 	for (int i = 0; i < amountOfPlayers; i++) {
 		placePenguin(size, board, getPlayer(players, i));
