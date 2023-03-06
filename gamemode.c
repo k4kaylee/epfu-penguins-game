@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <conio.h>
+
 #include "placement.h"
 #include "board.h"
 #include "player.h"
@@ -39,9 +42,16 @@ void runInteractive() {
 	
 	for (int i = 0; i < amountOfPlayers; i++) {
 		placePenguin(size, board, getPlayer(players, i));
+		displayBoard(size, board);
 		if (i == amountOfPlayers - 1)
 			setGamePhase(1);
-		displayBoard(size, board, getGamePhase());
+	}
+
+	for (int i = 0; i < amountOfPlayers; i++) {
+		if (getGamePhase() == 1)
+			setCurrentPlayer(getPlayer(players, i));
+		displayBoard(size, board);
+		_getch();
 	}
 };
 

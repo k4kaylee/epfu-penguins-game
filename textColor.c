@@ -1,5 +1,9 @@
 #include <windows.h>
 #include <dos.h>
+#include "player.h"
+#include "board.h"
+#include "gamePhase.h"
+
 
 void setColor(int ForgC)
 {
@@ -17,6 +21,61 @@ void setColor(int ForgC)
     }
     return;
 }
+
+
+
+char** getPossibleMoves(char** board, int size) {
+    struct Player* current = getCurrentPlayer();
+
+    char** possibleMoves = 0;
+    possibleMoves = malloc(sizeof(*board) * size);
+    for (int i = 0; i < size; i++)
+        possibleMoves[i] = malloc(sizeof(**board) * size);
+
+    for (int i = 0; i < size; i++) {
+
+        for (int j = 0; j < size; j++)
+            possibleMoves[i][j] = '0';
+    }
+
+
+
+    //How can i get information from structure in another function?
+    int x = current->penguinX - 1;
+    int y = letterToInt(current->penguinY) - 1;
+
+    for (int i = x + 1; i < size; i++) {
+        if (board[i][y] == 'X' || board[i][y] == 'P')
+            break;
+        possibleMoves[i][y] = board[i][y];
+    }
+
+    for (int i = x - 1; i >= 0; i--) {
+        if (board[i][y] == 'X' || board[i][y] == 'P')
+            break;
+        possibleMoves[i][y] = board[i][y];
+    }
+
+    for (int j = y + 1; j < size; j++) {
+        if (board[x][j] == 'X' || board[x][j] == 'P')
+            break;
+        possibleMoves[x][j] = board[x][j];
+    }
+
+    for (int j = y - 1; j >= 0; j--) {
+        if (board[x][j] == 'X' || board[x][j] == 'P')
+            break;
+        possibleMoves[x][j] = board[x][j];
+    }
+    possibleMoves[x][y] = 'P';
+    return possibleMoves;
+
+
+
+}
+
+
+
 
 /*
  Name          | Value
@@ -36,5 +95,5 @@ void setColor(int ForgC)
  Light Red     | 12
  Light Magenta | 13
  Yellow        | 14
- White         | 15 
+ White         | 15
 */
