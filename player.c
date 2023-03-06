@@ -38,15 +38,44 @@ struct Player* getAllPlayers(int amount, struct Player* players) {
 	return players;
 };
 
+void checkPlayerData(int amount, struct Player* players) {
+	int check;
+	printf("Is data correct? (1 - accept, 0 - edit): ");
+	scanf("%d", &check);
+	if (!check) {
+		int playerId;
+		printf("\nInput id of a player you want to change: ");
+		scanf("%d", &playerId);
+		--playerId;
+		while (playerId > amount || playerId < 0) {
+			setColor(12);
+			printf("\n\nERROR: no player with such an ID. Input again: ");
+			setColor(7);
+			scanf("%d", &playerId);
+		}
+		
+		printf("\nChange %s's name to: ", players[playerId].name);
+		char* name = malloc(sizeof(char) * 20);
+		scanf("%s", name);
+		name[strcspn(name, "\r\n")] = 0; //to get rid of \0
+
+		players[playerId].name = name;
+		displayPlayerBoard(amount, players);
+	}
+}
+
 void displayPlayerBoard(int amount, struct Player* players) {
 	system("cls");
 	printf("List of Players: \n");
 	for(int i = 0; i < amount; i++)
 		printf("Name: %s\nID: %d\nPoints: %d\n\n", players[i].name, players[i].id, players[i].points);
-	printf("Press any key to continue...");
-	_getch();
+
+	checkPlayerData(amount, players);
+
 }
 
 struct Player getPlayer(struct Player* players, int i) {
 	return players[i];
 }
+
+
