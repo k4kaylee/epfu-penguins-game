@@ -10,6 +10,7 @@
 #include "gamePhase.h"
 #include "fileManager.h"
 #include "system.h"
+#include "textColor.h"
 
 #define INTERACTIVE 0
 #define AUTONOMOUS 1
@@ -28,17 +29,17 @@ int getGamemode() {
 	return gamemode;
 };
 
-void runInteractive(FILE* log) {	
+void runInteractive(FILE* log) {
+	initColorsList();
 	fprintf(log, "\nGamemode: Interactive");
-	int amountOfPlayers = getAmountOfPlayers();
+	setAmountOfPlayers();
 	fprintf(log, "\nAmount of players: %d", amountOfPlayers);
-	int amountOfPenguins = getAmountOfPenguins();
+    setAmountOfPenguins();
 	fprintf(log, "\nPenguins for each player: %d", amountOfPenguins);
-	struct Player* players = 0;
 	players = malloc(sizeof(struct Player) * amountOfPlayers);
 
-	players = getAllPlayers(amountOfPlayers, players);
-	displayPlayerBoard(amountOfPlayers, players);
+	players = getAllPlayers();
+	displayPlayerBoard();
 
 	for (int i = 0; i < amountOfPlayers; i++) {
 		fprintf(log, "\n%d: %s", i + 1, players[i].name);
@@ -60,9 +61,8 @@ void runInteractive(FILE* log) {
 	for (int j = 0; j < amountOfPenguins; j++) {
 		for (int i = 0; i < amountOfPlayers; i++) {
 			setPenguinID(j);
-			current = getPlayer(players, i);
-			placePenguin(board, current);
-			fprintf(log, "\n%s places their penguin at %d %c", current->name, current->penguinX[j], current->penguinY[j]);
+			placePenguin(board, getPlayer(i));
+			fprintf(log, "\n%s places their penguin at %d %c", players[i].name, players[i].penguinX[j], players[i].penguinY[j]);
 			displayBoard(board);
 		}
 	}
@@ -72,37 +72,39 @@ void runInteractive(FILE* log) {
 
 	fprintf(log, "\n\nMOVEMENT:\n");
 	for (int i = 0; i < amountOfPlayers; i++) {
-		setGamePhase(CHOOSING_PENGUIN);
-		displayBoard(board);
-		current = getPlayer(players, i);
+		current = getPlayer(i);
 		setCurrentPlayer(current);
-		choosePenguin(board, current);
+		if (amountOfPenguins != 1) {
+			setGamePhase(CHOOSING_PENGUIN);
+			displayBoard(board);
+			choosePenguin(board);//lets player choose a penguin and sets penguinID
+		}
 		setGamePhase(MOVEMENT);
 		displayBoard(board);
 		makeAMove(board);
 		int pengID = getPenguinID();
 		fprintf(log, "%s moves their penguin to %d %c\n", current->name, current->penguinX[pengID], current->penguinY[pengID]);
 		if (i == amountOfPlayers - 1)
-			setGamePhase(2);
+			setGamePhase(END_OF_GAME);
 	}
 
 
+	
 	displayBoard(board);
 	logBoard(board, log);
-	displayPoints(players, amountOfPlayers);
-	logPoints(players, amountOfPlayers, log);
+	displayPoints();
+	logPoints(log);
 	printf("\n\nThank you for the game! ^_^");
 };
 
 void runAutonomous(FILE* log) {
 	fprintf(log, "\nGamemode: Autonomous");
 	clear();
-	int amountOfPlayers = getAmountOfPlayers();
+	setAmountOfPlayers();
 	fprintf(log, "\nAmount of players: %d\n", amountOfPlayers);
-	struct Player* players = 0;
 	players = malloc(sizeof(struct Player) * amountOfPlayers);
 
-	players = getAllPlayers(amountOfPlayers, players);
+	players = getAllPlayers();
 
 
 	for (int i = 0; i < amountOfPlayers; i++) {
@@ -114,14 +116,14 @@ void runAutonomous(FILE* log) {
 	fprintf(log, "\n\nProgram files were scanned succesfully.\n\n");
 	
 	for (int i = 0; i < amountOfPlayers; i++) {
-		setCurrentPlayer(getPlayer(players, i));
+		setCurrentPlayer(getPlayer(i));
 		getPlayerFile(amountOfFiles);
 	}
 	char buf[BUFSIZ];
 	struct Player* current;
 	for (int i = 0; i < amountOfPlayers; i++) {
-		setCurrentPlayer(getPlayer(players, i));
-		current = getPlayer(players, i);
+		setCurrentPlayer(getPlayer(i));
+		current = getPlayer(i);
 		//_getcwd(buf, BUFSIZ); needs to be tested for linux
 		snprintf(buf, sizeof(buf), "%s\\programs\\%s", getCWD(buf, BUFSIZ), dirList[current->fileID - 1] );
 		clear();

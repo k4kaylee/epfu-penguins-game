@@ -1,12 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #ifdef _WIN32
 	#include <conio.h>
 	#include <direct.h>
 	#include "dirent.h"
 #else
 	#include <dirent.h>
+	#include <unistd.h>
+	#include <errno.h>
 #endif
 #include "player.h"
 #include "board.h"
@@ -30,7 +33,7 @@ void getChar() {
 char* getCWD(char* buf, int bufsize) {
 #ifdef _WIN32
 	return _getcwd(buf, bufsize);
-#else;
+#else
 	return getcwd(buf, bufsize);
 #endif
 }
@@ -118,19 +121,19 @@ void logBoard(struct Board* board, FILE* log) {
 	fprintf(log, "\n\n");
 }
 
-void logPoints(struct Player* players, int amountOfPlayers, FILE* log) {
+void logPoints(FILE* log) {
 	fprintf(log, "SCORE:");
 	struct Player* current;
 	int max = 0;
 	for (int i = 0; i < amountOfPlayers; i++) {
-		setCurrentPlayer(getPlayer(players, i));
+		setCurrentPlayer(getPlayer(i));
 		current = getCurrentPlayer();
 		if (current->points > max)
 			max = current->points;
 	}
 
 	for (int i = 0; i < amountOfPlayers; i++) {
-		setCurrentPlayer(getPlayer(players, i));
+		setCurrentPlayer(getPlayer(i));
 		current = getCurrentPlayer();
 		fprintf(log, "\n%s: %d", current->name, current->points);
 		if (current->points == max) {

@@ -4,6 +4,7 @@
 #include "textColor.h"
 #include "gamePhase.h"
 #include "system.h"
+#include "penguinID.h"
 
 
 
@@ -60,8 +61,16 @@ void displayBoard(struct Board* board) {
 					setColor(LIGHT_GREEN);
 			}
 
-			if (board->grid[i][j] == 'P'){
-				setColor(BLUE);
+			//Colorising players penguins (Yuki Kawasaki)
+			if (board->grid[i][j] == 'P') {
+				for (int id = 0; id < amountOfPlayers; id++) {
+					for (int penguinID = 0; penguinID < amountOfPenguins; penguinID++) {
+						if (i + 1 == players[id].penguinX[penguinID] && ('A' + j) == players[id].penguinY[penguinID]) {
+							setColor(players[id].color);
+							break;
+						}
+					}
+				}
 			}
 
 
