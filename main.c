@@ -3,12 +3,16 @@
 #include "board.h"
 #include "gamemode.h"
 #include "system.h"
+#include "penguinBot.h"
 
 
 
-int main() {
+int main(int argc, char** argv) {
 	FILE* log = createlog();
 	clearLogDir();
+	if (argc > 1) {
+		return runPenguinBot(argc, argv);
+	}
 	int gamemode = getGamemode();
 	gamemode ?
 		runInteractive(log)

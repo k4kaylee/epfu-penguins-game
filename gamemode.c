@@ -37,6 +37,10 @@ void runInteractive(FILE* log) {
     setAmountOfPenguins();
 	fprintf(log, "\nPenguins for each player: %d", amountOfPenguins);
 	players = malloc(sizeof(struct Player) * amountOfPlayers);
+	for (int i = 0; i < amountOfPenguins; i++) {
+		players[i].penguinX = malloc(sizeof(int) * amountOfPenguins);
+		players[i].penguinY = malloc(sizeof(char) * amountOfPenguins);
+	}
 
 	players = getAllPlayers();
 	displayPlayerBoard();

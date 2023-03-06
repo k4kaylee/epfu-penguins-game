@@ -15,7 +15,10 @@
 void placePenguin(struct Board* board, struct Player* player) {
 	int pengID = getPenguinID();
 
-	printf("\n%s's turn\n", player->name);
+	setColor(player->color);
+	printf("\n%s", player->name);
+	setColor(LIGHT_GRAY);
+	printf("'s turn\n");
 	printf("Choose your row (for example 1): ");
 	int coordinateX;
 	scanf("%d", &coordinateX);
@@ -34,19 +37,23 @@ void placePenguin(struct Board* board, struct Player* player) {
 	}
 
 
-	int x = coordinateX;
-	int y = letterToInt(coordinateY);
-	x--;
-	y--;
+	int x = coordinateX - 1;
+	int y = letterToInt(coordinateY) - 1;
+
 
 	// check this placement is inside the board size
-	if (y < 0 || y >= board->size || x < 0 || x >= board->size) {
+	while (y < 0 || y >= board->size || x < 0 || x >= board->size) {
 		displayBoard(board);
 		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
-		placePenguin(board, player);
-		return;
+		printf("Choose your row (for example 1): ");
+		scanf("%d", &coordinateX);
+		printf("Choose your column: (for example A): ");
+		scanf(" %c", &coordinateY);
+		x = coordinateX - 1;
+		y = letterToInt(coordinateY) - 1;
+
 	}
 
 	//check the designated cell only has 1 fish or not
@@ -55,12 +62,13 @@ void placePenguin(struct Board* board, struct Player* player) {
 		printf("\nERROR: You can't place here. Please, choose a cell with 1 fish: ");
 		setColor(LIGHT_GRAY);
 		printf("\nChoose your row (ex. 1): ");
-		scanf("%d", &x);
+		scanf("%d", &coordinateX);
 		printf("Choose your column: (ex. A): ");
 		scanf(" %c", &coordinateY);
-		y = letterToInt(coordinateY);
-		x--;
-		y--;
+		x = coordinateX - 1;
+		y = letterToInt(coordinateY) - 1;
+		printf("\n%d %c\n", x, coordinateY);
+
 	}
 
 	player->penguinX[pengID] = coordinateX;

@@ -37,6 +37,35 @@ void printColors() {
 
 enum PlayerColor getPlayerColor() {
     printColors();
+    printf("Available colors:\n");
+    for (int i = 0; i < 5; i++) {
+        if (colors[i] != NO_COLOR) {
+            printf("%d - ", i);
+            switch (colors[i]) {
+            case BLUE:
+                setColor(BLUE);
+                printf("Blue\n");
+                break;
+            case RED:
+                setColor(RED);
+                printf("Red\n");
+                break;;
+            case CYAN:
+                setColor(CYAN);
+                printf("Cyan\n");
+                break;
+            case MAGENTA:
+                setColor(MAGENTA);
+                printf("Magenta\n");
+                break;
+            case YELLOW:
+                setColor(YELLOW);
+                printf("Yellow\n");
+                break;
+            }
+            setColor(LIGHT_GRAY);
+        }
+    }
     printf("\nNow, please, choose the color for your penguins: ");
 
     int color;
