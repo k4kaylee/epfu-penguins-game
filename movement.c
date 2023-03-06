@@ -50,38 +50,11 @@ void makeAMove(char** board, int size) {
 
 	current->points += board[X][Y] - '0';
 	board[currentX][currentY] = 'X';
-
-	if (currentX == X){
-		if (Y > currentY) { // to the right
-			for (int i = currentY + 1; i < Y; i++) {
-				current->points += (board[X][i] - '0');
-				board[X][i] = 'X';
-			}
-		}
-		else if (Y < currentY) { // to the left
-			for (int i = currentY - 1; i > Y; i--) {
-				current->points += (board[X][i] - '0');
-				board[X][i] = 'X';
-			}
-		}
-	}
-	else if (currentY == Y) { 
-		if (X > currentX) { // down
-			printf("X > currentX");
-			for (int i = currentX + 1; i < X; i++) {
-				current->points += (board[i][Y] - '0');
-				board[i][Y] = 'X';
-			}
-		}
-		if (X < currentX) { // up
-			for (int i = currentX - 1; i > X; i--) {
-				current->points += (board[i][Y] - '0');
-				board[i][Y] = 'X';
-			}
-		}
-	}
-	
 	board[X][Y] = 'P';
+	
+	Y += 'A' - 1;
+	current->penguinX = X + 1;
+	current->penguinY = (char)Y;
 	displayBoard(size, board);
 };
 
