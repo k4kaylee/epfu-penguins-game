@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "board.h"
 #include "gamemode.h"
 #include "player.h"
+#include "textColor.h"
+#include "gamePhase.h"
 
 
 
@@ -16,35 +19,44 @@ void placePenguin(int size, char** board, struct Player player) {
 	scanf(" %c", &coordinateY);
 
 	if (letterToInt(coordinateY, size) == 0 || coordinateX > size) {
-		displayBoard(size, board);
+		displayBoard(size, board, getGamePhase());
 
 		printf("\n%d\n%c\n", letterToInt(coordinateY, size), coordinateY);
+		setColor(12);
 		printf("Something went wrong, please, try again.\n");
+		setColor(7);
 		placePenguin(size, board, player);
 	}
-	board[coordinateX - 1][letterToInt(coordinateY, size) - 1] = 'P';
-	displayBoard(size, board);
-	printf("\n%c\n%d\n", coordinateY, letterToInt(coordinateY, size));
+	player.penguinX = coordinateX;
+	player.penguinY = coordinateY;
+
+	board[player.penguinX - 1][letterToInt(player.penguinY, size) - 1] = 'P';
 }
 
 
 
 
 void placeFish(int size, char** board, int amount) {
-	int ones = 0;
+	int availableCells = 0;
+	srand((unsigned int)time(NULL));
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			board[i][j] = (rand() % 4) + '0';
 			if (board[i][j] == '1') {
-				ones = ones + 1;
+				availableCells = availableCells + 1;
 			}
+			if (board[i][j] == '0') {
+				board[i][j] = 'X';
+			}
+
 		}
 	}
-	
-	if (ones < amount) {
+
+	if (availableCells < amount) {
 		placeFish(size, board, amount);
 	}
-	displayBoard(size, board);
-	
+	displayBoard(size, board, getGamePhase());
+
 }
+
 

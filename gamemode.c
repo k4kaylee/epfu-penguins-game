@@ -3,6 +3,8 @@
 #include "placement.h"
 #include "board.h"
 #include "player.h"
+#include "textColor.h"
+#include "gamePhase.h"
 
 
 
@@ -13,7 +15,9 @@ int getGamemode() {
 	while (isInteractive != 0 && isInteractive != 1) {
 		system("cls");
 		printf("%d\n", isInteractive);
+		setColor(12);
 		printf("ERROR: incorrect gamemode input.\nPlease, choose gamemode again (0 - autunomous, 1 - interactive): ");
+		setColor(7);
 		scanf("%d", &isInteractive);
 	}
 	return isInteractive;
@@ -35,6 +39,9 @@ void runInteractive() {
 	
 	for (int i = 0; i < amountOfPlayers; i++) {
 		placePenguin(size, board, getPlayer(players, i));
+		if (i == amountOfPlayers - 1)
+			setGamePhase(1);
+		displayBoard(size, board, getGamePhase());
 	}
 };
 

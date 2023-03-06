@@ -1,5 +1,5 @@
 #include "player.h"
-
+#include "textColor.h"
 
 
 int checkMove() {

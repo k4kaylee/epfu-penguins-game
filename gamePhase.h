@@ -1,0 +1,2 @@
+void setGamePhase();
+int getGamePhase();
