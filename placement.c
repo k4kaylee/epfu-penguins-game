@@ -30,12 +30,21 @@ void placePenguin(int size, char** board, struct Player player) {
 
 
 
-void placeFish(int size, char** board) {
+void placeFish(int size, char** board, int amount) {
+	int ones = 0;
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			board[i][j] = (rand() % 4) + '0';
+			if (board[i][j] == '1') {
+				ones = ones + 1;
+			}
 		}
 	}
+	
+	if (ones < amount) {
+		placeFish(size, board, amount);
+	}
 	displayBoard(size, board);
+	
 }
 
