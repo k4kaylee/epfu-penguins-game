@@ -9,3 +9,4 @@ int getAmountOfPlayers();
 struct Player* getAllPlayers();
 void displayPlayerBoard();
 struct Player getPlayer();
+void checkPlayerData();
