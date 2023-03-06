@@ -26,13 +26,13 @@ void setAmountOfPlayers() {
 	int amount;
 	clear();
 	printf("Please, input the amount of players (at least 1, max 5): ");
-	scanf("%d", &amount);
+	amount = fixscanf();
 	while (amount < 1 || amount > 5) {
 		clear();
 		setColor(LIGHT_RED);
 		printf("ERROR: incorrect player amount. Please, type it again (at least 1, max 5): ");
 		setColor(LIGHT_GRAY);
-		scanf("%d", &amount);
+		amount = fixscanf();
 	}
 	clear();
 	amountOfPlayers = amount;
@@ -43,13 +43,13 @@ void setAmountOfPenguins() { //Michal's function
 	int pengus;
 	clear();
 	printf("Please, input the amount of penguins (at least 1, max 3): ");
-	scanf("%d", &pengus);
+	pengus = fixscanf();
 	while (pengus < 1 || pengus > 3) {
 		clear();
 		setColor(LIGHT_RED);
 		printf("ERROR: incorrect penguins amount. Please, type it again (at least 1, max 3): ");
 		setColor(LIGHT_GRAY);
-		scanf("%d", &pengus);
+		pengus = fixscanf();
 	}
 	clear();
 	amountOfPenguins = pengus;
@@ -86,17 +86,17 @@ struct Player* getAllPlayers() {
 void checkPlayerData() {
 	int check;
 	printf("Is data correct? (1 - accept, 0 - edit): ");
-	scanf("%d", &check);
+	check = fixscanf();
 	if (!check) {
 		int playerId;
 		printf("\nInput id of a player you want to change: ");
-		scanf("%d", &playerId);
+		playerId = fixscanf();
 		--playerId;
 		while (playerId > amountOfPlayers || playerId < 0) {
 			setColor(LIGHT_RED);
 			printf("\n\nERROR: no player with such an ID. Input again: ");
 			setColor(LIGHT_GRAY);
-			scanf("%d", &playerId);
+			playerId = fixscanf();
 		}
 		
 		printf("\nChange %s's name to: ", players[playerId].name);

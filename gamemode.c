@@ -18,13 +18,13 @@
 int getGamemode() {
 	int gamemode;
 	printf("Welcome to 'Hey! That's my fish!'\n\nFirst of all, we should choose the gamemode.\nPlease, put '0' for autonomous mode or '1' for interative: ");
-	scanf("%d", &gamemode);
+	gamemode = fixscanf();
 	while (gamemode != INTERACTIVE && gamemode != AUTONOMOUS) {
 		clear();
 		setColor(LIGHT_RED);
 		printf("ERROR: incorrect gamemode input.\nPlease, choose gamemode again (0 - autunomous, 1 - interactive): ");
 		setColor(LIGHT_GRAY);
-		scanf("%d", &gamemode);
+		gamemode = fixscanf();
 	}
 	return gamemode;
 };

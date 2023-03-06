@@ -12,14 +12,14 @@ int getSize() {
 	clear();
 	int size;
 	printf("Input board size: ");
-	scanf("%d", &size);
+	size = fixscanf();
 	while(size <= 3 || size > 21) {
 		clear();
 		setColor(LIGHT_RED);
 		printf("ERROR: board size is incorrect. Consider a number at least >3 and <21.\n");
 		setColor(LIGHT_GRAY);
 		printf("Input board size: ");
-		scanf("%d", &size);
+		size = fixscanf();
 	}	
 	return size;
 }

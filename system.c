@@ -14,6 +14,7 @@
 #include "player.h"
 #include "system.h"
 #include "board.h"
+#include "textColor.h"
 
 void clear() {
 #ifdef _WIN32
@@ -142,4 +143,20 @@ void logPoints(FILE* log) {
 
 		}
 	}
+}
+
+int fixscanf() { //Michal's function
+	int variable;
+	int readNr = 0;
+	while (readNr != 1) {
+
+		readNr = scanf("%d", &variable);
+		if (readNr != 1) {
+			setColor(LIGHT_RED);
+			printf("ERROR: please input a number: \n");
+			setColor(LIGHT_GRAY);
+		}
+		scanf("%*[^\n]");
+	}
+	return variable;
 }

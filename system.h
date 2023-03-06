@@ -13,3 +13,4 @@ void logPoints(FILE* log); //print scoreboard in log
 void clearLogDir(void); //deletes the oldest file in 'gamelogs' directory if the amount of log files is >5
 char* getCWD(char* buf, int byteSize); //gets current file directory and puts it in 'buf'
 int letterToInt(char coordinate);//custom function used to translate coordinates on x-axis from symbols to numbers
+int fixscanf(void);//helps with validation of integer

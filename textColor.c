@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "textColor.h"
+#include "system.h"
 #define LIGHT_GRAY 7
 #define LIGHT_GREEN 10
 #define LIGHT_RED 12
@@ -68,8 +69,7 @@ enum PlayerColor getPlayerColor() {
     }
     printf("\nNow, please, choose the color for your penguins: ");
 
-    int color;
-    scanf("%d", &color);
+    int color = fixscanf();
     for (int i = 0; i < 5; i++) {
         if (color == colors[i]) {
             colors[i] = NO_COLOR;

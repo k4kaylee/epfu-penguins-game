@@ -8,7 +8,7 @@
 
 
 
-	void choosePenguin(struct Board* board) { //Michal's function
+void choosePenguin(struct Board* board) { //Michal's function
 
 	int xpen;
 	char ypen;
@@ -20,7 +20,7 @@
 	printf("'s move\n");
 	printf("choose penguin you want to move\n");
 	printf("\nInput number of the row (for example, 1): ");
-	scanf("%d", &xpen);
+	xpen = fixscanf();
 	printf("Input number of the row (for example, A): ");
 	scanf(" %c", &ypen);
 	ypen = (char)toupper(ypen);
@@ -63,7 +63,7 @@ void makeAMove(struct Board* board) {
 	char buffer;
 	do {
 		printf("\nInput number of the row to move (ex. 1): ");
-		scanf("%d", &X);
+		X = fixscanf();
 		X--;
 		printf("Input number of the column to move (ex. A): ");
 		scanf(" %c", &buffer);

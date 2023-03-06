@@ -21,7 +21,7 @@ void placePenguin(struct Board* board, struct Player* player) {
 	printf("'s turn\n");
 	printf("Choose your row (for example 1): ");
 	int coordinateX;
-	scanf("%d", &coordinateX);
+	coordinateX = fixscanf();
 	char coordinateY;
 	printf("Choose your column: (for example A): ");
 	scanf(" %c", &coordinateY);
@@ -48,7 +48,7 @@ void placePenguin(struct Board* board, struct Player* player) {
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
 		printf("Choose your row (for example 1): ");
-		scanf("%d", &coordinateX);
+		coordinateX = fixscanf();
 		printf("Choose your column: (for example A): ");
 		scanf(" %c", &coordinateY);
 		x = coordinateX - 1;
@@ -62,7 +62,7 @@ void placePenguin(struct Board* board, struct Player* player) {
 		printf("\nERROR: You can't place here. Please, choose a cell with 1 fish: ");
 		setColor(LIGHT_GRAY);
 		printf("\nChoose your row (ex. 1): ");
-		scanf("%d", &coordinateX);
+		coordinateX = fixscanf();
 		printf("Choose your column: (ex. A): ");
 		scanf(" %c", &coordinateY);
 		x = coordinateX - 1;
