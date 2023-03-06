@@ -8,26 +8,28 @@
 
 
 
-void choosePenguin(struct Board* board, struct Player* player) { //Michal's function
+void choosePenguin(struct Board* board) { //Michal's function
 
 	int ID = 0;
 	int xpen;
 	char ypen;
 
-	printf("\n%s's move\n", player->name);
+	struct Player* current = getCurrentPlayer();
+	printf("\n%s's move\n", current->name);
 	printf("choose penguin you want to move\n");
 	printf("\nInput number of the row (for example, 1): ");
 	scanf("%d", &xpen);
 	printf("Input number of the row (for example, A): ");
 	scanf(" %c", &ypen);
+	ypen = (char)toupper(ypen);
 
-	if ((xpen == player->penguinX[0]) && (ypen == player->penguinY[0])) {
+	if ((xpen == current->penguinX[0]) && (ypen == current->penguinY[0])) {
 		ID = 0;
 	}
-	else if ((xpen == player->penguinX[1]) && (ypen == player->penguinY[1])) {
+	else if ((xpen == current->penguinX[1]) && (ypen == current->penguinY[1])) {
 		ID = 1;
 	}
-	else if ((xpen == player->penguinX[2]) && (ypen == player->penguinY[2])) {
+	else if ((xpen == current->penguinX[2]) && (ypen == current->penguinY[2])) {
 		ID = 2;
 	}
 
@@ -36,7 +38,7 @@ void choosePenguin(struct Board* board, struct Player* player) { //Michal's func
 		setColor(LIGHT_RED);
 		printf("\nERROR: incorrect coordinate input, please, try again.\n");
 		setColor(LIGHT_GRAY);
-		choosePenguin(board, player);
+		choosePenguin(board);
 
 	}
 	setPenguinID(ID);
@@ -54,6 +56,7 @@ void makeAMove(struct Board* board) {
 	int currentY = letterToInt(current->penguinY[ID]) - 1;
 
 	char** possibleMoves = getPossibleMoves(board);
+
 
 	int X;
 	int Y;
@@ -88,7 +91,7 @@ void makeAMove(struct Board* board) {
 	board->grid[X][Y] = 'P';
 
 	current->penguinX[ID] = X + 1;
-	current->penguinY[ID] = (char)(Y + 1);
+	current->penguinY[ID] = (char)('A' + Y);
 
 };
 
