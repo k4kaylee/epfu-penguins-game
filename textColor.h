@@ -1,2 +1,1 @@
-void setColor();
-char** getPossibleMoves(char** board, int size);
+void setColor(int ForgC); // used to colorise text
